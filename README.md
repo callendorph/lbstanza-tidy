@@ -5,10 +5,22 @@ HTML, XHTML, and XML documents.
 
 ## Setup
 
-You will need to either install libtidy or clone its repo from github. If you clone
-from github, you will need to run the cmake build to generate the static/dynamic
-libraries. Then you can modify the `start.sh` script to tell the build system
-where it can expect to find these files.
+This module includes `tidy-html5` as a git submodule for ease of build.
+
+```
+sudo apt install cmake build-essentials
+git submodule update --init
+cd tidy-html5
+mkdir output
+cd output
+cmake ..
+make
+```
+
+This will place the static/dynamic artifacts in the `tidy-html5/output` directory. The `start.sh` script references this directory and the `tidy-html5/include` folder.
+
+If you want to install libtidy using your OS's package manager, you will need to set the environment variables in `start.sh` to the correct
+location to find the headers and libraries.
 
 ## Build
 
