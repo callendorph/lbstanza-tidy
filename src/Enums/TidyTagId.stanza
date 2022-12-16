@@ -1,0 +1,634 @@
+defpackage tidy/Enums/TidyTagId :
+  import core
+
+public deftype TidyTagId
+public deftype TidyTag_UNKNOWN <: TidyTagId
+public deftype TidyTag_A <: TidyTagId
+public deftype TidyTag_ABBR <: TidyTagId
+public deftype TidyTag_ACRONYM <: TidyTagId
+public deftype TidyTag_ADDRESS <: TidyTagId
+public deftype TidyTag_ALIGN <: TidyTagId
+public deftype TidyTag_APPLET <: TidyTagId
+public deftype TidyTag_AREA <: TidyTagId
+public deftype TidyTag_B <: TidyTagId
+public deftype TidyTag_BASE <: TidyTagId
+public deftype TidyTag_BASEFONT <: TidyTagId
+public deftype TidyTag_BDO <: TidyTagId
+public deftype TidyTag_BGSOUND <: TidyTagId
+public deftype TidyTag_BIG <: TidyTagId
+public deftype TidyTag_BLINK <: TidyTagId
+public deftype TidyTag_BLOCKQUOTE <: TidyTagId
+public deftype TidyTag_BODY <: TidyTagId
+public deftype TidyTag_BR <: TidyTagId
+public deftype TidyTag_BUTTON <: TidyTagId
+public deftype TidyTag_CAPTION <: TidyTagId
+public deftype TidyTag_CENTER <: TidyTagId
+public deftype TidyTag_CITE <: TidyTagId
+public deftype TidyTag_CODE <: TidyTagId
+public deftype TidyTag_COL <: TidyTagId
+public deftype TidyTag_COLGROUP <: TidyTagId
+public deftype TidyTag_COMMENT <: TidyTagId
+public deftype TidyTag_DD <: TidyTagId
+public deftype TidyTag_DEL <: TidyTagId
+public deftype TidyTag_DFN <: TidyTagId
+public deftype TidyTag_DIR <: TidyTagId
+public deftype TidyTag_DIV <: TidyTagId
+public deftype TidyTag_DL <: TidyTagId
+public deftype TidyTag_DT <: TidyTagId
+public deftype TidyTag_EM <: TidyTagId
+public deftype TidyTag_EMBED <: TidyTagId
+public deftype TidyTag_FIELDSET <: TidyTagId
+public deftype TidyTag_FONT <: TidyTagId
+public deftype TidyTag_FORM <: TidyTagId
+public deftype TidyTag_FRAME <: TidyTagId
+public deftype TidyTag_FRAMESET <: TidyTagId
+public deftype TidyTag_H1 <: TidyTagId
+public deftype TidyTag_H2 <: TidyTagId
+public deftype TidyTag_H3 <: TidyTagId
+public deftype TidyTag_H4 <: TidyTagId
+public deftype TidyTag_H5 <: TidyTagId
+public deftype TidyTag_H6 <: TidyTagId
+public deftype TidyTag_HEAD <: TidyTagId
+public deftype TidyTag_HR <: TidyTagId
+public deftype TidyTag_HTML <: TidyTagId
+public deftype TidyTag_I <: TidyTagId
+public deftype TidyTag_IFRAME <: TidyTagId
+public deftype TidyTag_ILAYER <: TidyTagId
+public deftype TidyTag_IMG <: TidyTagId
+public deftype TidyTag_INPUT <: TidyTagId
+public deftype TidyTag_INS <: TidyTagId
+public deftype TidyTag_ISINDEX <: TidyTagId
+public deftype TidyTag_KBD <: TidyTagId
+public deftype TidyTag_KEYGEN <: TidyTagId
+public deftype TidyTag_LABEL <: TidyTagId
+public deftype TidyTag_LAYER <: TidyTagId
+public deftype TidyTag_LEGEND <: TidyTagId
+public deftype TidyTag_LI <: TidyTagId
+public deftype TidyTag_LINK <: TidyTagId
+public deftype TidyTag_LISTING <: TidyTagId
+public deftype TidyTag_MAP <: TidyTagId
+public deftype TidyTag_MATHML <: TidyTagId
+public deftype TidyTag_MARQUEE <: TidyTagId
+public deftype TidyTag_MENU <: TidyTagId
+public deftype TidyTag_META <: TidyTagId
+public deftype TidyTag_MULTICOL <: TidyTagId
+public deftype TidyTag_NOBR <: TidyTagId
+public deftype TidyTag_NOEMBED <: TidyTagId
+public deftype TidyTag_NOFRAMES <: TidyTagId
+public deftype TidyTag_NOLAYER <: TidyTagId
+public deftype TidyTag_NOSAVE <: TidyTagId
+public deftype TidyTag_NOSCRIPT <: TidyTagId
+public deftype TidyTag_OBJECT <: TidyTagId
+public deftype TidyTag_OL <: TidyTagId
+public deftype TidyTag_OPTGROUP <: TidyTagId
+public deftype TidyTag_OPTION <: TidyTagId
+public deftype TidyTag_P <: TidyTagId
+public deftype TidyTag_PARAM <: TidyTagId
+public deftype TidyTag_PICTURE <: TidyTagId
+public deftype TidyTag_PLAINTEXT <: TidyTagId
+public deftype TidyTag_PRE <: TidyTagId
+public deftype TidyTag_Q <: TidyTagId
+public deftype TidyTag_RB <: TidyTagId
+public deftype TidyTag_RBC <: TidyTagId
+public deftype TidyTag_RP <: TidyTagId
+public deftype TidyTag_RT <: TidyTagId
+public deftype TidyTag_RTC <: TidyTagId
+public deftype TidyTag_RUBY <: TidyTagId
+public deftype TidyTag_S <: TidyTagId
+public deftype TidyTag_SAMP <: TidyTagId
+public deftype TidyTag_SCRIPT <: TidyTagId
+public deftype TidyTag_SELECT <: TidyTagId
+public deftype TidyTag_SERVER <: TidyTagId
+public deftype TidyTag_SERVLET <: TidyTagId
+public deftype TidyTag_SMALL <: TidyTagId
+public deftype TidyTag_SPACER <: TidyTagId
+public deftype TidyTag_SPAN <: TidyTagId
+public deftype TidyTag_STRIKE <: TidyTagId
+public deftype TidyTag_STRONG <: TidyTagId
+public deftype TidyTag_STYLE <: TidyTagId
+public deftype TidyTag_SUB <: TidyTagId
+public deftype TidyTag_SUP <: TidyTagId
+public deftype TidyTag_SVG <: TidyTagId
+public deftype TidyTag_TABLE <: TidyTagId
+public deftype TidyTag_TBODY <: TidyTagId
+public deftype TidyTag_TD <: TidyTagId
+public deftype TidyTag_TEXTAREA <: TidyTagId
+public deftype TidyTag_TFOOT <: TidyTagId
+public deftype TidyTag_TH <: TidyTagId
+public deftype TidyTag_THEAD <: TidyTagId
+public deftype TidyTag_TITLE <: TidyTagId
+public deftype TidyTag_TR <: TidyTagId
+public deftype TidyTag_TT <: TidyTagId
+public deftype TidyTag_U <: TidyTagId
+public deftype TidyTag_UL <: TidyTagId
+public deftype TidyTag_VAR <: TidyTagId
+public deftype TidyTag_WBR <: TidyTagId
+public deftype TidyTag_XMP <: TidyTagId
+public deftype TidyTag_NEXTID <: TidyTagId
+public deftype TidyTag_ARTICLE <: TidyTagId
+public deftype TidyTag_ASIDE <: TidyTagId
+public deftype TidyTag_AUDIO <: TidyTagId
+public deftype TidyTag_BDI <: TidyTagId
+public deftype TidyTag_CANVAS <: TidyTagId
+public deftype TidyTag_COMMAND <: TidyTagId
+public deftype TidyTag_DATA <: TidyTagId
+public deftype TidyTag_DATALIST <: TidyTagId
+public deftype TidyTag_DETAILS <: TidyTagId
+public deftype TidyTag_DIALOG <: TidyTagId
+public deftype TidyTag_FIGCAPTION <: TidyTagId
+public deftype TidyTag_FIGURE <: TidyTagId
+public deftype TidyTag_FOOTER <: TidyTagId
+public deftype TidyTag_HEADER <: TidyTagId
+public deftype TidyTag_HGROUP <: TidyTagId
+public deftype TidyTag_MAIN <: TidyTagId
+public deftype TidyTag_MARK <: TidyTagId
+public deftype TidyTag_MENUITEM <: TidyTagId
+public deftype TidyTag_METER <: TidyTagId
+public deftype TidyTag_NAV <: TidyTagId
+public deftype TidyTag_OUTPUT <: TidyTagId
+public deftype TidyTag_PROGRESS <: TidyTagId
+public deftype TidyTag_SECTION <: TidyTagId
+public deftype TidyTag_SOURCE <: TidyTagId
+public deftype TidyTag_SUMMARY <: TidyTagId
+public deftype TidyTag_TEMPLATE <: TidyTagId
+public deftype TidyTag_TIME <: TidyTagId
+public deftype TidyTag_TRACK <: TidyTagId
+public deftype TidyTag_VIDEO <: TidyTagId
+public deftype TidyTag_SLOT <: TidyTagId
+public deftype N_TIDY_TAGS <: TidyTagId
+
+public defn to-int (v:TidyTagId) -> Int:
+  match(v) :
+    (x:TidyTag_UNKNOWN) : 0
+    (x:TidyTag_A) : 1
+    (x:TidyTag_ABBR) : 2
+    (x:TidyTag_ACRONYM) : 3
+    (x:TidyTag_ADDRESS) : 4
+    (x:TidyTag_ALIGN) : 5
+    (x:TidyTag_APPLET) : 6
+    (x:TidyTag_AREA) : 7
+    (x:TidyTag_B) : 8
+    (x:TidyTag_BASE) : 9
+    (x:TidyTag_BASEFONT) : 10
+    (x:TidyTag_BDO) : 11
+    (x:TidyTag_BGSOUND) : 12
+    (x:TidyTag_BIG) : 13
+    (x:TidyTag_BLINK) : 14
+    (x:TidyTag_BLOCKQUOTE) : 15
+    (x:TidyTag_BODY) : 16
+    (x:TidyTag_BR) : 17
+    (x:TidyTag_BUTTON) : 18
+    (x:TidyTag_CAPTION) : 19
+    (x:TidyTag_CENTER) : 20
+    (x:TidyTag_CITE) : 21
+    (x:TidyTag_CODE) : 22
+    (x:TidyTag_COL) : 23
+    (x:TidyTag_COLGROUP) : 24
+    (x:TidyTag_COMMENT) : 25
+    (x:TidyTag_DD) : 26
+    (x:TidyTag_DEL) : 27
+    (x:TidyTag_DFN) : 28
+    (x:TidyTag_DIR) : 29
+    (x:TidyTag_DIV) : 30
+    (x:TidyTag_DL) : 31
+    (x:TidyTag_DT) : 32
+    (x:TidyTag_EM) : 33
+    (x:TidyTag_EMBED) : 34
+    (x:TidyTag_FIELDSET) : 35
+    (x:TidyTag_FONT) : 36
+    (x:TidyTag_FORM) : 37
+    (x:TidyTag_FRAME) : 38
+    (x:TidyTag_FRAMESET) : 39
+    (x:TidyTag_H1) : 40
+    (x:TidyTag_H2) : 41
+    (x:TidyTag_H3) : 42
+    (x:TidyTag_H4) : 43
+    (x:TidyTag_H5) : 44
+    (x:TidyTag_H6) : 45
+    (x:TidyTag_HEAD) : 46
+    (x:TidyTag_HR) : 47
+    (x:TidyTag_HTML) : 48
+    (x:TidyTag_I) : 49
+    (x:TidyTag_IFRAME) : 50
+    (x:TidyTag_ILAYER) : 51
+    (x:TidyTag_IMG) : 52
+    (x:TidyTag_INPUT) : 53
+    (x:TidyTag_INS) : 54
+    (x:TidyTag_ISINDEX) : 55
+    (x:TidyTag_KBD) : 56
+    (x:TidyTag_KEYGEN) : 57
+    (x:TidyTag_LABEL) : 58
+    (x:TidyTag_LAYER) : 59
+    (x:TidyTag_LEGEND) : 60
+    (x:TidyTag_LI) : 61
+    (x:TidyTag_LINK) : 62
+    (x:TidyTag_LISTING) : 63
+    (x:TidyTag_MAP) : 64
+    (x:TidyTag_MATHML) : 65
+    (x:TidyTag_MARQUEE) : 66
+    (x:TidyTag_MENU) : 67
+    (x:TidyTag_META) : 68
+    (x:TidyTag_MULTICOL) : 69
+    (x:TidyTag_NOBR) : 70
+    (x:TidyTag_NOEMBED) : 71
+    (x:TidyTag_NOFRAMES) : 72
+    (x:TidyTag_NOLAYER) : 73
+    (x:TidyTag_NOSAVE) : 74
+    (x:TidyTag_NOSCRIPT) : 75
+    (x:TidyTag_OBJECT) : 76
+    (x:TidyTag_OL) : 77
+    (x:TidyTag_OPTGROUP) : 78
+    (x:TidyTag_OPTION) : 79
+    (x:TidyTag_P) : 80
+    (x:TidyTag_PARAM) : 81
+    (x:TidyTag_PICTURE) : 82
+    (x:TidyTag_PLAINTEXT) : 83
+    (x:TidyTag_PRE) : 84
+    (x:TidyTag_Q) : 85
+    (x:TidyTag_RB) : 86
+    (x:TidyTag_RBC) : 87
+    (x:TidyTag_RP) : 88
+    (x:TidyTag_RT) : 89
+    (x:TidyTag_RTC) : 90
+    (x:TidyTag_RUBY) : 91
+    (x:TidyTag_S) : 92
+    (x:TidyTag_SAMP) : 93
+    (x:TidyTag_SCRIPT) : 94
+    (x:TidyTag_SELECT) : 95
+    (x:TidyTag_SERVER) : 96
+    (x:TidyTag_SERVLET) : 97
+    (x:TidyTag_SMALL) : 98
+    (x:TidyTag_SPACER) : 99
+    (x:TidyTag_SPAN) : 100
+    (x:TidyTag_STRIKE) : 101
+    (x:TidyTag_STRONG) : 102
+    (x:TidyTag_STYLE) : 103
+    (x:TidyTag_SUB) : 104
+    (x:TidyTag_SUP) : 105
+    (x:TidyTag_SVG) : 106
+    (x:TidyTag_TABLE) : 107
+    (x:TidyTag_TBODY) : 108
+    (x:TidyTag_TD) : 109
+    (x:TidyTag_TEXTAREA) : 110
+    (x:TidyTag_TFOOT) : 111
+    (x:TidyTag_TH) : 112
+    (x:TidyTag_THEAD) : 113
+    (x:TidyTag_TITLE) : 114
+    (x:TidyTag_TR) : 115
+    (x:TidyTag_TT) : 116
+    (x:TidyTag_U) : 117
+    (x:TidyTag_UL) : 118
+    (x:TidyTag_VAR) : 119
+    (x:TidyTag_WBR) : 120
+    (x:TidyTag_XMP) : 121
+    (x:TidyTag_NEXTID) : 122
+    (x:TidyTag_ARTICLE) : 123
+    (x:TidyTag_ASIDE) : 124
+    (x:TidyTag_AUDIO) : 125
+    (x:TidyTag_BDI) : 126
+    (x:TidyTag_CANVAS) : 127
+    (x:TidyTag_COMMAND) : 128
+    (x:TidyTag_DATA) : 129
+    (x:TidyTag_DATALIST) : 130
+    (x:TidyTag_DETAILS) : 131
+    (x:TidyTag_DIALOG) : 132
+    (x:TidyTag_FIGCAPTION) : 133
+    (x:TidyTag_FIGURE) : 134
+    (x:TidyTag_FOOTER) : 135
+    (x:TidyTag_HEADER) : 136
+    (x:TidyTag_HGROUP) : 137
+    (x:TidyTag_MAIN) : 138
+    (x:TidyTag_MARK) : 139
+    (x:TidyTag_MENUITEM) : 140
+    (x:TidyTag_METER) : 141
+    (x:TidyTag_NAV) : 142
+    (x:TidyTag_OUTPUT) : 143
+    (x:TidyTag_PROGRESS) : 144
+    (x:TidyTag_SECTION) : 145
+    (x:TidyTag_SOURCE) : 146
+    (x:TidyTag_SUMMARY) : 147
+    (x:TidyTag_TEMPLATE) : 148
+    (x:TidyTag_TIME) : 149
+    (x:TidyTag_TRACK) : 150
+    (x:TidyTag_VIDEO) : 151
+    (x:TidyTag_SLOT) : 152
+    (x:N_TIDY_TAGS) : 153
+
+public defn TidyTagId (v:Int) -> TidyTagId :
+  switch {v == _}:
+    0 : new TidyTag_UNKNOWN
+    1 : new TidyTag_A
+    2 : new TidyTag_ABBR
+    3 : new TidyTag_ACRONYM
+    4 : new TidyTag_ADDRESS
+    5 : new TidyTag_ALIGN
+    6 : new TidyTag_APPLET
+    7 : new TidyTag_AREA
+    8 : new TidyTag_B
+    9 : new TidyTag_BASE
+    10 : new TidyTag_BASEFONT
+    11 : new TidyTag_BDO
+    12 : new TidyTag_BGSOUND
+    13 : new TidyTag_BIG
+    14 : new TidyTag_BLINK
+    15 : new TidyTag_BLOCKQUOTE
+    16 : new TidyTag_BODY
+    17 : new TidyTag_BR
+    18 : new TidyTag_BUTTON
+    19 : new TidyTag_CAPTION
+    20 : new TidyTag_CENTER
+    21 : new TidyTag_CITE
+    22 : new TidyTag_CODE
+    23 : new TidyTag_COL
+    24 : new TidyTag_COLGROUP
+    25 : new TidyTag_COMMENT
+    26 : new TidyTag_DD
+    27 : new TidyTag_DEL
+    28 : new TidyTag_DFN
+    29 : new TidyTag_DIR
+    30 : new TidyTag_DIV
+    31 : new TidyTag_DL
+    32 : new TidyTag_DT
+    33 : new TidyTag_EM
+    34 : new TidyTag_EMBED
+    35 : new TidyTag_FIELDSET
+    36 : new TidyTag_FONT
+    37 : new TidyTag_FORM
+    38 : new TidyTag_FRAME
+    39 : new TidyTag_FRAMESET
+    40 : new TidyTag_H1
+    41 : new TidyTag_H2
+    42 : new TidyTag_H3
+    43 : new TidyTag_H4
+    44 : new TidyTag_H5
+    45 : new TidyTag_H6
+    46 : new TidyTag_HEAD
+    47 : new TidyTag_HR
+    48 : new TidyTag_HTML
+    49 : new TidyTag_I
+    50 : new TidyTag_IFRAME
+    51 : new TidyTag_ILAYER
+    52 : new TidyTag_IMG
+    53 : new TidyTag_INPUT
+    54 : new TidyTag_INS
+    55 : new TidyTag_ISINDEX
+    56 : new TidyTag_KBD
+    57 : new TidyTag_KEYGEN
+    58 : new TidyTag_LABEL
+    59 : new TidyTag_LAYER
+    60 : new TidyTag_LEGEND
+    61 : new TidyTag_LI
+    62 : new TidyTag_LINK
+    63 : new TidyTag_LISTING
+    64 : new TidyTag_MAP
+    65 : new TidyTag_MATHML
+    66 : new TidyTag_MARQUEE
+    67 : new TidyTag_MENU
+    68 : new TidyTag_META
+    69 : new TidyTag_MULTICOL
+    70 : new TidyTag_NOBR
+    71 : new TidyTag_NOEMBED
+    72 : new TidyTag_NOFRAMES
+    73 : new TidyTag_NOLAYER
+    74 : new TidyTag_NOSAVE
+    75 : new TidyTag_NOSCRIPT
+    76 : new TidyTag_OBJECT
+    77 : new TidyTag_OL
+    78 : new TidyTag_OPTGROUP
+    79 : new TidyTag_OPTION
+    80 : new TidyTag_P
+    81 : new TidyTag_PARAM
+    82 : new TidyTag_PICTURE
+    83 : new TidyTag_PLAINTEXT
+    84 : new TidyTag_PRE
+    85 : new TidyTag_Q
+    86 : new TidyTag_RB
+    87 : new TidyTag_RBC
+    88 : new TidyTag_RP
+    89 : new TidyTag_RT
+    90 : new TidyTag_RTC
+    91 : new TidyTag_RUBY
+    92 : new TidyTag_S
+    93 : new TidyTag_SAMP
+    94 : new TidyTag_SCRIPT
+    95 : new TidyTag_SELECT
+    96 : new TidyTag_SERVER
+    97 : new TidyTag_SERVLET
+    98 : new TidyTag_SMALL
+    99 : new TidyTag_SPACER
+    100 : new TidyTag_SPAN
+    101 : new TidyTag_STRIKE
+    102 : new TidyTag_STRONG
+    103 : new TidyTag_STYLE
+    104 : new TidyTag_SUB
+    105 : new TidyTag_SUP
+    106 : new TidyTag_SVG
+    107 : new TidyTag_TABLE
+    108 : new TidyTag_TBODY
+    109 : new TidyTag_TD
+    110 : new TidyTag_TEXTAREA
+    111 : new TidyTag_TFOOT
+    112 : new TidyTag_TH
+    113 : new TidyTag_THEAD
+    114 : new TidyTag_TITLE
+    115 : new TidyTag_TR
+    116 : new TidyTag_TT
+    117 : new TidyTag_U
+    118 : new TidyTag_UL
+    119 : new TidyTag_VAR
+    120 : new TidyTag_WBR
+    121 : new TidyTag_XMP
+    122 : new TidyTag_NEXTID
+    123 : new TidyTag_ARTICLE
+    124 : new TidyTag_ASIDE
+    125 : new TidyTag_AUDIO
+    126 : new TidyTag_BDI
+    127 : new TidyTag_CANVAS
+    128 : new TidyTag_COMMAND
+    129 : new TidyTag_DATA
+    130 : new TidyTag_DATALIST
+    131 : new TidyTag_DETAILS
+    132 : new TidyTag_DIALOG
+    133 : new TidyTag_FIGCAPTION
+    134 : new TidyTag_FIGURE
+    135 : new TidyTag_FOOTER
+    136 : new TidyTag_HEADER
+    137 : new TidyTag_HGROUP
+    138 : new TidyTag_MAIN
+    139 : new TidyTag_MARK
+    140 : new TidyTag_MENUITEM
+    141 : new TidyTag_METER
+    142 : new TidyTag_NAV
+    143 : new TidyTag_OUTPUT
+    144 : new TidyTag_PROGRESS
+    145 : new TidyTag_SECTION
+    146 : new TidyTag_SOURCE
+    147 : new TidyTag_SUMMARY
+    148 : new TidyTag_TEMPLATE
+    149 : new TidyTag_TIME
+    150 : new TidyTag_TRACK
+    151 : new TidyTag_VIDEO
+    152 : new TidyTag_SLOT
+    153 : new N_TIDY_TAGS
+    else: throw(Exception("Invalid Exception Value"))
+
+public lostanza defn TidyTagId (v:int) -> ref<TidyTagId> :
+  return TidyTagId(new Int{v})
+
+defmethod print (o:OutputStream, v:TidyTagId) :
+  match(v) :
+    (x:TidyTag_UNKNOWN) : print(o, "TidyTag_UNKNOWN")
+    (x:TidyTag_A) : print(o, "TidyTag_A")
+    (x:TidyTag_ABBR) : print(o, "TidyTag_ABBR")
+    (x:TidyTag_ACRONYM) : print(o, "TidyTag_ACRONYM")
+    (x:TidyTag_ADDRESS) : print(o, "TidyTag_ADDRESS")
+    (x:TidyTag_ALIGN) : print(o, "TidyTag_ALIGN")
+    (x:TidyTag_APPLET) : print(o, "TidyTag_APPLET")
+    (x:TidyTag_AREA) : print(o, "TidyTag_AREA")
+    (x:TidyTag_B) : print(o, "TidyTag_B")
+    (x:TidyTag_BASE) : print(o, "TidyTag_BASE")
+    (x:TidyTag_BASEFONT) : print(o, "TidyTag_BASEFONT")
+    (x:TidyTag_BDO) : print(o, "TidyTag_BDO")
+    (x:TidyTag_BGSOUND) : print(o, "TidyTag_BGSOUND")
+    (x:TidyTag_BIG) : print(o, "TidyTag_BIG")
+    (x:TidyTag_BLINK) : print(o, "TidyTag_BLINK")
+    (x:TidyTag_BLOCKQUOTE) : print(o, "TidyTag_BLOCKQUOTE")
+    (x:TidyTag_BODY) : print(o, "TidyTag_BODY")
+    (x:TidyTag_BR) : print(o, "TidyTag_BR")
+    (x:TidyTag_BUTTON) : print(o, "TidyTag_BUTTON")
+    (x:TidyTag_CAPTION) : print(o, "TidyTag_CAPTION")
+    (x:TidyTag_CENTER) : print(o, "TidyTag_CENTER")
+    (x:TidyTag_CITE) : print(o, "TidyTag_CITE")
+    (x:TidyTag_CODE) : print(o, "TidyTag_CODE")
+    (x:TidyTag_COL) : print(o, "TidyTag_COL")
+    (x:TidyTag_COLGROUP) : print(o, "TidyTag_COLGROUP")
+    (x:TidyTag_COMMENT) : print(o, "TidyTag_COMMENT")
+    (x:TidyTag_DD) : print(o, "TidyTag_DD")
+    (x:TidyTag_DEL) : print(o, "TidyTag_DEL")
+    (x:TidyTag_DFN) : print(o, "TidyTag_DFN")
+    (x:TidyTag_DIR) : print(o, "TidyTag_DIR")
+    (x:TidyTag_DIV) : print(o, "TidyTag_DIV")
+    (x:TidyTag_DL) : print(o, "TidyTag_DL")
+    (x:TidyTag_DT) : print(o, "TidyTag_DT")
+    (x:TidyTag_EM) : print(o, "TidyTag_EM")
+    (x:TidyTag_EMBED) : print(o, "TidyTag_EMBED")
+    (x:TidyTag_FIELDSET) : print(o, "TidyTag_FIELDSET")
+    (x:TidyTag_FONT) : print(o, "TidyTag_FONT")
+    (x:TidyTag_FORM) : print(o, "TidyTag_FORM")
+    (x:TidyTag_FRAME) : print(o, "TidyTag_FRAME")
+    (x:TidyTag_FRAMESET) : print(o, "TidyTag_FRAMESET")
+    (x:TidyTag_H1) : print(o, "TidyTag_H1")
+    (x:TidyTag_H2) : print(o, "TidyTag_H2")
+    (x:TidyTag_H3) : print(o, "TidyTag_H3")
+    (x:TidyTag_H4) : print(o, "TidyTag_H4")
+    (x:TidyTag_H5) : print(o, "TidyTag_H5")
+    (x:TidyTag_H6) : print(o, "TidyTag_H6")
+    (x:TidyTag_HEAD) : print(o, "TidyTag_HEAD")
+    (x:TidyTag_HR) : print(o, "TidyTag_HR")
+    (x:TidyTag_HTML) : print(o, "TidyTag_HTML")
+    (x:TidyTag_I) : print(o, "TidyTag_I")
+    (x:TidyTag_IFRAME) : print(o, "TidyTag_IFRAME")
+    (x:TidyTag_ILAYER) : print(o, "TidyTag_ILAYER")
+    (x:TidyTag_IMG) : print(o, "TidyTag_IMG")
+    (x:TidyTag_INPUT) : print(o, "TidyTag_INPUT")
+    (x:TidyTag_INS) : print(o, "TidyTag_INS")
+    (x:TidyTag_ISINDEX) : print(o, "TidyTag_ISINDEX")
+    (x:TidyTag_KBD) : print(o, "TidyTag_KBD")
+    (x:TidyTag_KEYGEN) : print(o, "TidyTag_KEYGEN")
+    (x:TidyTag_LABEL) : print(o, "TidyTag_LABEL")
+    (x:TidyTag_LAYER) : print(o, "TidyTag_LAYER")
+    (x:TidyTag_LEGEND) : print(o, "TidyTag_LEGEND")
+    (x:TidyTag_LI) : print(o, "TidyTag_LI")
+    (x:TidyTag_LINK) : print(o, "TidyTag_LINK")
+    (x:TidyTag_LISTING) : print(o, "TidyTag_LISTING")
+    (x:TidyTag_MAP) : print(o, "TidyTag_MAP")
+    (x:TidyTag_MATHML) : print(o, "TidyTag_MATHML")
+    (x:TidyTag_MARQUEE) : print(o, "TidyTag_MARQUEE")
+    (x:TidyTag_MENU) : print(o, "TidyTag_MENU")
+    (x:TidyTag_META) : print(o, "TidyTag_META")
+    (x:TidyTag_MULTICOL) : print(o, "TidyTag_MULTICOL")
+    (x:TidyTag_NOBR) : print(o, "TidyTag_NOBR")
+    (x:TidyTag_NOEMBED) : print(o, "TidyTag_NOEMBED")
+    (x:TidyTag_NOFRAMES) : print(o, "TidyTag_NOFRAMES")
+    (x:TidyTag_NOLAYER) : print(o, "TidyTag_NOLAYER")
+    (x:TidyTag_NOSAVE) : print(o, "TidyTag_NOSAVE")
+    (x:TidyTag_NOSCRIPT) : print(o, "TidyTag_NOSCRIPT")
+    (x:TidyTag_OBJECT) : print(o, "TidyTag_OBJECT")
+    (x:TidyTag_OL) : print(o, "TidyTag_OL")
+    (x:TidyTag_OPTGROUP) : print(o, "TidyTag_OPTGROUP")
+    (x:TidyTag_OPTION) : print(o, "TidyTag_OPTION")
+    (x:TidyTag_P) : print(o, "TidyTag_P")
+    (x:TidyTag_PARAM) : print(o, "TidyTag_PARAM")
+    (x:TidyTag_PICTURE) : print(o, "TidyTag_PICTURE")
+    (x:TidyTag_PLAINTEXT) : print(o, "TidyTag_PLAINTEXT")
+    (x:TidyTag_PRE) : print(o, "TidyTag_PRE")
+    (x:TidyTag_Q) : print(o, "TidyTag_Q")
+    (x:TidyTag_RB) : print(o, "TidyTag_RB")
+    (x:TidyTag_RBC) : print(o, "TidyTag_RBC")
+    (x:TidyTag_RP) : print(o, "TidyTag_RP")
+    (x:TidyTag_RT) : print(o, "TidyTag_RT")
+    (x:TidyTag_RTC) : print(o, "TidyTag_RTC")
+    (x:TidyTag_RUBY) : print(o, "TidyTag_RUBY")
+    (x:TidyTag_S) : print(o, "TidyTag_S")
+    (x:TidyTag_SAMP) : print(o, "TidyTag_SAMP")
+    (x:TidyTag_SCRIPT) : print(o, "TidyTag_SCRIPT")
+    (x:TidyTag_SELECT) : print(o, "TidyTag_SELECT")
+    (x:TidyTag_SERVER) : print(o, "TidyTag_SERVER")
+    (x:TidyTag_SERVLET) : print(o, "TidyTag_SERVLET")
+    (x:TidyTag_SMALL) : print(o, "TidyTag_SMALL")
+    (x:TidyTag_SPACER) : print(o, "TidyTag_SPACER")
+    (x:TidyTag_SPAN) : print(o, "TidyTag_SPAN")
+    (x:TidyTag_STRIKE) : print(o, "TidyTag_STRIKE")
+    (x:TidyTag_STRONG) : print(o, "TidyTag_STRONG")
+    (x:TidyTag_STYLE) : print(o, "TidyTag_STYLE")
+    (x:TidyTag_SUB) : print(o, "TidyTag_SUB")
+    (x:TidyTag_SUP) : print(o, "TidyTag_SUP")
+    (x:TidyTag_SVG) : print(o, "TidyTag_SVG")
+    (x:TidyTag_TABLE) : print(o, "TidyTag_TABLE")
+    (x:TidyTag_TBODY) : print(o, "TidyTag_TBODY")
+    (x:TidyTag_TD) : print(o, "TidyTag_TD")
+    (x:TidyTag_TEXTAREA) : print(o, "TidyTag_TEXTAREA")
+    (x:TidyTag_TFOOT) : print(o, "TidyTag_TFOOT")
+    (x:TidyTag_TH) : print(o, "TidyTag_TH")
+    (x:TidyTag_THEAD) : print(o, "TidyTag_THEAD")
+    (x:TidyTag_TITLE) : print(o, "TidyTag_TITLE")
+    (x:TidyTag_TR) : print(o, "TidyTag_TR")
+    (x:TidyTag_TT) : print(o, "TidyTag_TT")
+    (x:TidyTag_U) : print(o, "TidyTag_U")
+    (x:TidyTag_UL) : print(o, "TidyTag_UL")
+    (x:TidyTag_VAR) : print(o, "TidyTag_VAR")
+    (x:TidyTag_WBR) : print(o, "TidyTag_WBR")
+    (x:TidyTag_XMP) : print(o, "TidyTag_XMP")
+    (x:TidyTag_NEXTID) : print(o, "TidyTag_NEXTID")
+    (x:TidyTag_ARTICLE) : print(o, "TidyTag_ARTICLE")
+    (x:TidyTag_ASIDE) : print(o, "TidyTag_ASIDE")
+    (x:TidyTag_AUDIO) : print(o, "TidyTag_AUDIO")
+    (x:TidyTag_BDI) : print(o, "TidyTag_BDI")
+    (x:TidyTag_CANVAS) : print(o, "TidyTag_CANVAS")
+    (x:TidyTag_COMMAND) : print(o, "TidyTag_COMMAND")
+    (x:TidyTag_DATA) : print(o, "TidyTag_DATA")
+    (x:TidyTag_DATALIST) : print(o, "TidyTag_DATALIST")
+    (x:TidyTag_DETAILS) : print(o, "TidyTag_DETAILS")
+    (x:TidyTag_DIALOG) : print(o, "TidyTag_DIALOG")
+    (x:TidyTag_FIGCAPTION) : print(o, "TidyTag_FIGCAPTION")
+    (x:TidyTag_FIGURE) : print(o, "TidyTag_FIGURE")
+    (x:TidyTag_FOOTER) : print(o, "TidyTag_FOOTER")
+    (x:TidyTag_HEADER) : print(o, "TidyTag_HEADER")
+    (x:TidyTag_HGROUP) : print(o, "TidyTag_HGROUP")
+    (x:TidyTag_MAIN) : print(o, "TidyTag_MAIN")
+    (x:TidyTag_MARK) : print(o, "TidyTag_MARK")
+    (x:TidyTag_MENUITEM) : print(o, "TidyTag_MENUITEM")
+    (x:TidyTag_METER) : print(o, "TidyTag_METER")
+    (x:TidyTag_NAV) : print(o, "TidyTag_NAV")
+    (x:TidyTag_OUTPUT) : print(o, "TidyTag_OUTPUT")
+    (x:TidyTag_PROGRESS) : print(o, "TidyTag_PROGRESS")
+    (x:TidyTag_SECTION) : print(o, "TidyTag_SECTION")
+    (x:TidyTag_SOURCE) : print(o, "TidyTag_SOURCE")
+    (x:TidyTag_SUMMARY) : print(o, "TidyTag_SUMMARY")
+    (x:TidyTag_TEMPLATE) : print(o, "TidyTag_TEMPLATE")
+    (x:TidyTag_TIME) : print(o, "TidyTag_TIME")
+    (x:TidyTag_TRACK) : print(o, "TidyTag_TRACK")
+    (x:TidyTag_VIDEO) : print(o, "TidyTag_VIDEO")
+    (x:TidyTag_SLOT) : print(o, "TidyTag_SLOT")
+    (x:N_TIDY_TAGS) : print(o, "N_TIDY_TAGS")
+

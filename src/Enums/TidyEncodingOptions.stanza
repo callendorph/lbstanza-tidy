@@ -1,0 +1,74 @@
+defpackage tidy/Enums/TidyEncodingOptions :
+  import core
+
+public deftype TidyEncodingOptions
+public deftype TidyEncRaw <: TidyEncodingOptions
+public deftype TidyEncAscii <: TidyEncodingOptions
+public deftype TidyEncLatin0 <: TidyEncodingOptions
+public deftype TidyEncLatin1 <: TidyEncodingOptions
+public deftype TidyEncUtf8 <: TidyEncodingOptions
+public deftype TidyEncIso2022 <: TidyEncodingOptions
+public deftype TidyEncMac <: TidyEncodingOptions
+public deftype TidyEncWin1252 <: TidyEncodingOptions
+public deftype TidyEncIbm858 <: TidyEncodingOptions
+public deftype TidyEncUtf16le <: TidyEncodingOptions
+public deftype TidyEncUtf16be <: TidyEncodingOptions
+public deftype TidyEncUtf16 <: TidyEncodingOptions
+public deftype TidyEncBig5 <: TidyEncodingOptions
+public deftype TidyEncShiftjis <: TidyEncodingOptions
+
+public defn to-int (v:TidyEncodingOptions) -> Int:
+  match(v) :
+    (x:TidyEncRaw) : 0
+    (x:TidyEncAscii) : 1
+    (x:TidyEncLatin0) : 2
+    (x:TidyEncLatin1) : 3
+    (x:TidyEncUtf8) : 4
+    (x:TidyEncIso2022) : 5
+    (x:TidyEncMac) : 6
+    (x:TidyEncWin1252) : 7
+    (x:TidyEncIbm858) : 8
+    (x:TidyEncUtf16le) : 9
+    (x:TidyEncUtf16be) : 10
+    (x:TidyEncUtf16) : 11
+    (x:TidyEncBig5) : 12
+    (x:TidyEncShiftjis) : 13
+
+public defn TidyEncodingOptions (v:Int) -> TidyEncodingOptions :
+  switch {v == _}:
+    0 : new TidyEncRaw
+    1 : new TidyEncAscii
+    2 : new TidyEncLatin0
+    3 : new TidyEncLatin1
+    4 : new TidyEncUtf8
+    5 : new TidyEncIso2022
+    6 : new TidyEncMac
+    7 : new TidyEncWin1252
+    8 : new TidyEncIbm858
+    9 : new TidyEncUtf16le
+    10 : new TidyEncUtf16be
+    11 : new TidyEncUtf16
+    12 : new TidyEncBig5
+    13 : new TidyEncShiftjis
+    else: throw(Exception("Invalid Exception Value"))
+
+public lostanza defn TidyEncodingOptions (v:int) -> ref<TidyEncodingOptions> :
+  return TidyEncodingOptions(new Int{v})
+
+defmethod print (o:OutputStream, v:TidyEncodingOptions) :
+  match(v) :
+    (x:TidyEncRaw) : print(o, "TidyEncRaw")
+    (x:TidyEncAscii) : print(o, "TidyEncAscii")
+    (x:TidyEncLatin0) : print(o, "TidyEncLatin0")
+    (x:TidyEncLatin1) : print(o, "TidyEncLatin1")
+    (x:TidyEncUtf8) : print(o, "TidyEncUtf8")
+    (x:TidyEncIso2022) : print(o, "TidyEncIso2022")
+    (x:TidyEncMac) : print(o, "TidyEncMac")
+    (x:TidyEncWin1252) : print(o, "TidyEncWin1252")
+    (x:TidyEncIbm858) : print(o, "TidyEncIbm858")
+    (x:TidyEncUtf16le) : print(o, "TidyEncUtf16le")
+    (x:TidyEncUtf16be) : print(o, "TidyEncUtf16be")
+    (x:TidyEncUtf16) : print(o, "TidyEncUtf16")
+    (x:TidyEncBig5) : print(o, "TidyEncBig5")
+    (x:TidyEncShiftjis) : print(o, "TidyEncShiftjis")
+

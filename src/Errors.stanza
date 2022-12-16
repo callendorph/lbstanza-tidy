@@ -1,0 +1,43 @@
+defpackage tidy/Errors :
+  import core
+  import tidy/Document
+  import tidy/Buffer
+
+extern tidyErrorCodeAsKey : (int) -> ptr<byte>
+extern tidySetErrorFile : (ptr<?>,ptr<byte>) -> ptr<?>
+extern tidySetErrorBuffer : (ptr<?>,ptr<?>) -> int
+
+public lostanza defn get-error-msg (code:ref<Int>) -> ref<String> :
+  ; this function segfaults on run.
+  val ret = tidyErrorCodeAsKey(code.value)
+  return String(ret)
+
+public defstruct TidyException <: Exception:
+  code:Int
+
+defmethod print (o:OutputStream, e:TidyException) :
+  val c = code(e)
+  ; val m = get-error-msg(c)
+  val m = "Message Unknown"
+  print(o, "Tidy Error[%_]: %_" % [c, m])
+
+public defstruct TidyFailure <: Exception :
+  msg:String
+
+public lostanza defn TidyFailure (msg:ptr<byte>) -> ref<TidyFailure> :
+  return TidyFailure(String(msg))
+
+defmethod print (o:OutputStream, e:TidyFailure) :
+  val m = msg(e)
+  print(o, "Tidy Failure: %_" % [m])
+
+public lostanza defn set-error-file (doc:ref<TidyDoc>, fpath:ref<String>) -> ref<False> :
+  call-c tidySetErrorFile(doc.value, addr!(fpath.chars))
+  return false
+
+public lostanza defn set-error-buffer (doc:ref<TidyDoc>) -> ref<TidyBuffer> :
+  val buf = TidyBuffer()
+  val ret = call-c tidySetErrorBuffer(doc.value, addr!(buf.allocator))
+  if ret != 0 :
+    throw(TidyException(new Int{ret}))
+  return buf

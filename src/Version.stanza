@@ -1,0 +1,19 @@
+defpackage tidy/Version :
+  import core
+
+
+extern tidyReleaseDate : () -> ptr<byte>
+extern tidyLibraryVersion : () -> ptr<byte>
+extern tidyPlatform : () -> ptr<byte>
+
+public lostanza defn tidy-release-date () -> ref<String> :
+  val ret = call-c tidyReleaseDate()
+  return String(ret)
+
+public lostanza defn tidy-lib-version () -> ref<String> :
+  val ret = call-c tidyLibraryVersion()
+  return String(ret)
+
+public lostanza defn tidy-platform () -> ref<String> :
+  val ret = call-c tidyPlatform()
+  return String(ret)

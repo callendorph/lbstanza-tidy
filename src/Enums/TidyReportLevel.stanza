@@ -1,0 +1,58 @@
+defpackage tidy/Enums/TidyReportLevel :
+  import core
+
+public deftype TidyReportLevel
+public deftype TidyInfo <: TidyReportLevel
+public deftype TidyWarning <: TidyReportLevel
+public deftype TidyConfig <: TidyReportLevel
+public deftype TidyAccess <: TidyReportLevel
+public deftype TidyError <: TidyReportLevel
+public deftype TidyBadDocument <: TidyReportLevel
+public deftype TidyFatal <: TidyReportLevel
+public deftype TidyDialogueSummary <: TidyReportLevel
+public deftype TidyDialogueInfo <: TidyReportLevel
+public deftype TidyDialogueFootnote <: TidyReportLevel
+
+public defn to-int (v:TidyReportLevel) -> Int:
+  match(v) :
+    (x:TidyInfo) : 350
+    (x:TidyWarning) : 351
+    (x:TidyConfig) : 352
+    (x:TidyAccess) : 353
+    (x:TidyError) : 354
+    (x:TidyBadDocument) : 355
+    (x:TidyFatal) : 356
+    (x:TidyDialogueSummary) : 357
+    (x:TidyDialogueInfo) : 358
+    (x:TidyDialogueFootnote) : 359
+
+public defn TidyReportLevel (v:Int) -> TidyReportLevel :
+  switch {v == _}:
+    350 : new TidyInfo
+    351 : new TidyWarning
+    352 : new TidyConfig
+    353 : new TidyAccess
+    354 : new TidyError
+    355 : new TidyBadDocument
+    356 : new TidyFatal
+    357 : new TidyDialogueSummary
+    358 : new TidyDialogueInfo
+    359 : new TidyDialogueFootnote
+    else: throw(Exception("Invalid Exception Value"))
+
+public lostanza defn TidyReportLevel (v:int) -> ref<TidyReportLevel> :
+  return TidyReportLevel(new Int{v})
+
+defmethod print (o:OutputStream, v:TidyReportLevel) :
+  match(v) :
+    (x:TidyInfo) : print(o, "TidyInfo")
+    (x:TidyWarning) : print(o, "TidyWarning")
+    (x:TidyConfig) : print(o, "TidyConfig")
+    (x:TidyAccess) : print(o, "TidyAccess")
+    (x:TidyError) : print(o, "TidyError")
+    (x:TidyBadDocument) : print(o, "TidyBadDocument")
+    (x:TidyFatal) : print(o, "TidyFatal")
+    (x:TidyDialogueSummary) : print(o, "TidyDialogueSummary")
+    (x:TidyDialogueInfo) : print(o, "TidyDialogueInfo")
+    (x:TidyDialogueFootnote) : print(o, "TidyDialogueFootnote")
+

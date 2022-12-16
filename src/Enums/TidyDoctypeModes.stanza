@@ -1,0 +1,42 @@
+defpackage tidy/Enums/TidyDoctypeModes :
+  import core
+
+public deftype TidyDoctypeModes
+public deftype TidyDoctypeHtml5 <: TidyDoctypeModes
+public deftype TidyDoctypeOmit <: TidyDoctypeModes
+public deftype TidyDoctypeAuto <: TidyDoctypeModes
+public deftype TidyDoctypeStrict <: TidyDoctypeModes
+public deftype TidyDoctypeLoose <: TidyDoctypeModes
+public deftype TidyDoctypeUser <: TidyDoctypeModes
+
+public defn to-int (v:TidyDoctypeModes) -> Int:
+  match(v) :
+    (x:TidyDoctypeHtml5) : 0
+    (x:TidyDoctypeOmit) : 1
+    (x:TidyDoctypeAuto) : 2
+    (x:TidyDoctypeStrict) : 3
+    (x:TidyDoctypeLoose) : 4
+    (x:TidyDoctypeUser) : 5
+
+public defn TidyDoctypeModes (v:Int) -> TidyDoctypeModes :
+  switch {v == _}:
+    0 : new TidyDoctypeHtml5
+    1 : new TidyDoctypeOmit
+    2 : new TidyDoctypeAuto
+    3 : new TidyDoctypeStrict
+    4 : new TidyDoctypeLoose
+    5 : new TidyDoctypeUser
+    else: throw(Exception("Invalid Exception Value"))
+
+public lostanza defn TidyDoctypeModes (v:int) -> ref<TidyDoctypeModes> :
+  return TidyDoctypeModes(new Int{v})
+
+defmethod print (o:OutputStream, v:TidyDoctypeModes) :
+  match(v) :
+    (x:TidyDoctypeHtml5) : print(o, "TidyDoctypeHtml5")
+    (x:TidyDoctypeOmit) : print(o, "TidyDoctypeOmit")
+    (x:TidyDoctypeAuto) : print(o, "TidyDoctypeAuto")
+    (x:TidyDoctypeStrict) : print(o, "TidyDoctypeStrict")
+    (x:TidyDoctypeLoose) : print(o, "TidyDoctypeLoose")
+    (x:TidyDoctypeUser) : print(o, "TidyDoctypeUser")
+

@@ -1,0 +1,30 @@
+defpackage tidy/Enums/TidyOptionType :
+  import core
+
+public deftype TidyOptionType
+public deftype TidyString <: TidyOptionType
+public deftype TidyInteger <: TidyOptionType
+public deftype TidyBoolean <: TidyOptionType
+
+public defn to-int (v:TidyOptionType) -> Int:
+  match(v) :
+    (x:TidyString) : 0
+    (x:TidyInteger) : 1
+    (x:TidyBoolean) : 2
+
+public defn TidyOptionType (v:Int) -> TidyOptionType :
+  switch {v == _}:
+    0 : new TidyString
+    1 : new TidyInteger
+    2 : new TidyBoolean
+    else: throw(Exception("Invalid Exception Value"))
+
+public lostanza defn TidyOptionType (v:int) -> ref<TidyOptionType> :
+  return TidyOptionType(new Int{v})
+
+defmethod print (o:OutputStream, v:TidyOptionType) :
+  match(v) :
+    (x:TidyString) : print(o, "TidyString")
+    (x:TidyInteger) : print(o, "TidyInteger")
+    (x:TidyBoolean) : print(o, "TidyBoolean")
+

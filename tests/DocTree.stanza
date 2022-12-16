@@ -1,0 +1,227 @@
+#use-added-syntax(tests)
+defpackage tidy/tests/DocTree :
+  import core
+  import tidy/Document
+  import tidy/DocTree
+  import tidy/Buffer
+  import tidy/Errors
+  import tidy/Options
+  import tidy/Enums/TidyOptionType
+  import tidy/Enums/TidyNodeType
+  import tidy/Enums/TidyTagId
+  import tidy/Enums/TidyAttrId
+
+
+deftest(doctree) test-basic:
+
+  val doc = TidyDoc()
+  val stat = get-status(doc)
+  #EXPECT(stat == 0)
+
+  val opt = get-option(doc, "output-xml")
+  val ret = get-type(opt)
+  val typeStr = to-string("%_" % [ret])
+  #EXPECT(typeStr == "TidyBoolean")
+
+  val input = "<!DOCTYPE html><html><head><title>SomeStuff</title></head><body><p id=\"asdf\">SomeText</p></body></html>"
+
+  val code = parse-str(doc, input)
+  #EXPECT(code == 0)
+
+  match(get-root(doc)):
+    (x:One<TidyNode>):
+      val root = value(x)
+      #EXPECT( get-type(root) is TidyNode_Root)
+    (x:None):
+      #EXPECT( "Expected Root Non Null" == "")
+
+  match(get-html(doc)):
+    (x:One<TidyNode>):
+      val html = value(x)
+      #EXPECT(get-name(html) == "html")
+      #EXPECT(get-type(html) is TidyNode_Start)
+    (x:None):
+      #EXPECT( "Expected HTML Non Null" == "")
+
+  match(get-head(doc)):
+    (x:One<TidyNode>):
+      val head = value(x)
+      #EXPECT(get-name(head) == "head")
+      #EXPECT(get-type(head) is TidyNode_Start)
+      #EXPECT(is-header?(head) == false)
+      #EXPECT(has-text?(doc, head) == false)
+    (x:None):
+      #EXPECT( "Expected HEAD Non Null" == "")
+
+  match(get-body(doc)):
+    (x:One<TidyNode>):
+      val body = value(x)
+      #EXPECT(get-name(body) == "body")
+      #EXPECT(get-type(body) is TidyNode_Start)
+      #EXPECT(is-header?(body) == false)
+    (x:None):
+      println("No Body Node Returned")
+      #EXPECT(true == false)
+
+deftest(doctree) test-child-parent:
+
+  val doc = TidyDoc()
+  val stat = get-status(doc)
+  #EXPECT(stat == 0)
+
+  val input = "<!DOCTYPE html><html><head><title>SomeStuff</title></head><body><p id=\"asdf\">SomeText</p><p id=\"qwer\">SomeMoreText</p></body></html>"
+
+  val code = parse-str(doc, input)
+  #EXPECT(code == 0)
+
+  val body:TidyNode = value!(get-body(doc))
+
+  match(get-child(body)):
+    (x:One<TidyNode>):
+      val p1 = value(x)
+      #EXPECT(get-name(p1) == "p")
+      #EXPECT(get-type(p1) is TidyNode_Start)
+      #EXPECT(is-header?(p1) == false)
+      #EXPECT(get-line(p1) == 1)
+      #EXPECT(get-column(p1) == 65)
+      #EXPECT(get-id(p1) is TidyTag_P)
+
+      val p2 = get-next(p1)
+      #EXPECT(not empty?(p2))
+
+      val p3 = get-next(value!(p2))
+      #EXPECT(empty?(p3))
+
+      val p4 = get-next(p2)
+      #EXPECT(empty?(p4))
+
+
+      match(get-parent(p2)):
+        (x:One<TidyNode>):
+          val parent = value(x)
+          #EXPECT(get-name(parent) == "body")
+        (x:None):
+          println("No Parent Returned")
+          #EXPECT(true == false)
+    (x:None):
+      println("No Child Returned")
+      #EXPECT(true == false)
+
+deftest(doctree) test-node-attr:
+
+  val doc = TidyDoc()
+  val stat = get-status(doc)
+  #EXPECT(stat == 0)
+
+  val input = "<!DOCTYPE html><html><head><title>SomeStuff</title></head><body><p id=\"asdf\">SomeText</p><p id=\"qwer\">SomeMoreText</p></body></html>"
+
+  val code = parse-str(doc, input)
+  #EXPECT(code == 0)
+
+  val body:TidyNode = value!(get-body(doc))
+  val p1:TidyNode = value!(get-child(body))
+
+  #EXPECT(get-name(p1) == "p")
+
+  match(first-attr(p1)):
+    (x:None):
+      println("No Attr Returned")
+      #EXPECT(true == false)
+    (x:One<TidyAttr>):
+      val idAttr = value(x)
+      #EXPECT(get-name(idAttr) == "id")
+      #EXPECT(get-value(idAttr) == "asdf")
+      #EXPECT(get-id(idAttr) is TidyAttr_ID)
+
+  val a = first-attr(p1)
+  #EXPECT(not empty?(a))
+  val b = get-next(a)
+  #EXPECT(empty?(b))
+
+deftest(doctree) test-node-text:
+
+  val doc = TidyDoc()
+  val stat = get-status(doc)
+  #EXPECT(stat == 0)
+
+  val input = "<!DOCTYPE html><html><head><title>SomeStuff</title></head><body><p id=\"asdf\">SomeText</p><p id=\"qwer\">SomeMoreText</p></body></html>"
+  val code = parse-str(doc, input)
+  #EXPECT(code == 0)
+
+  val body:TidyNode = value!(get-body(doc))
+  val p1:TidyNode = value!(get-child(body))
+
+  val text:TidyNode = value!(get-child(p1))
+  #EXPECT(has-text?(doc, text) == true)
+
+  val content = get-text(doc, text)
+  #EXPECT(content == "SomeText\n")
+
+  val raw = get-value(doc, text)
+  #EXPECT(raw == "SomeText")
+
+deftest(doctree) test-node-seq:
+
+  val doc = TidyDoc()
+  val stat = get-status(doc)
+  #EXPECT(stat == 0)
+
+  val input = "<!DOCTYPE html><html><head><title>SomeStuff</title></head><body><p id=\"asdf\">SomeText</p><p id=\"qwer\">SomeMoreText</p></body></html>"
+
+  val code = parse-str(doc, input)
+  #EXPECT(code == 0)
+
+  val body:TidyNode = value!(get-body(doc))
+  val pChilds = to-tuple(get-children(body))
+  #EXPECT(length(pChilds) == 2)
+
+  for i in 0 to length(pChilds) do:
+    val c = pChilds[i]
+    #EXPECT(get-name(c) == "p")
+
+  ; `get-children` on a maybe
+  val p2 = to-tuple(get-children(get-body(doc)))
+  #EXPECT(length(p2) == 2)
+
+deftest(doctree) test-attr-seq:
+
+  val doc = TidyDoc()
+  val stat = get-status(doc)
+  #EXPECT(stat == 0)
+
+  val input = "<!DOCTYPE html><html><head><title>SomeStuff</title></head><body><p id=\"asdf\" class=\"shark\">SomeText</p></body></html>"
+
+  val code = parse-str(doc, input)
+  #EXPECT(code == 0)
+
+  val body:TidyNode = value!(get-body(doc))
+  val p1:TidyNode = value!(get-child(body))
+
+  val attrs = to-tuple(get-attributes(p1))
+  #EXPECT(length(attrs) == 2)
+
+  #EXPECT(get-name(attrs[0]) == "id")
+  #EXPECT(get-name(attrs[1]) == "class")
+
+deftest(doctree) test-node-attr-str:
+
+  val doc = TidyDoc()
+  val stat = get-status(doc)
+  #EXPECT(stat == 0)
+
+  val input = "<!DOCTYPE html><html><head><title>SomeStuff</title></head><body><p id=\"asdf\" class=\"shark\">SomeText</p></body></html>"
+
+  val code = parse-str(doc, input)
+  #EXPECT(code == 0)
+
+  val body:TidyNode = value!(get-body(doc))
+  val bStr = to-string("%~" % [body])
+  #EXPECT(bStr == "Node: body Line: 1:59")
+
+  val p1:TidyNode = value!(get-child(body))
+  val pStr = to-string("%~" % [p1])
+  #EXPECT(pStr == "Node: p Line: 1:65")
+
+  val attr:TidyAttr = value!(first-attr(p1))
+  val aStr = to-string("%~" % [attr])
+  #EXPECT(aStr == "Attr: id=asdf")

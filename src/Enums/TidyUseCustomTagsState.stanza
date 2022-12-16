@@ -1,0 +1,38 @@
+defpackage tidy/Enums/TidyUseCustomTagsState :
+  import core
+
+public deftype TidyUseCustomTagsState
+public deftype TidyCustomNo <: TidyUseCustomTagsState
+public deftype TidyCustomBlocklevel <: TidyUseCustomTagsState
+public deftype TidyCustomEmpty <: TidyUseCustomTagsState
+public deftype TidyCustomInline <: TidyUseCustomTagsState
+public deftype TidyCustomPre <: TidyUseCustomTagsState
+
+public defn to-int (v:TidyUseCustomTagsState) -> Int:
+  match(v) :
+    (x:TidyCustomNo) : 0
+    (x:TidyCustomBlocklevel) : 1
+    (x:TidyCustomEmpty) : 2
+    (x:TidyCustomInline) : 3
+    (x:TidyCustomPre) : 4
+
+public defn TidyUseCustomTagsState (v:Int) -> TidyUseCustomTagsState :
+  switch {v == _}:
+    0 : new TidyCustomNo
+    1 : new TidyCustomBlocklevel
+    2 : new TidyCustomEmpty
+    3 : new TidyCustomInline
+    4 : new TidyCustomPre
+    else: throw(Exception("Invalid Exception Value"))
+
+public lostanza defn TidyUseCustomTagsState (v:int) -> ref<TidyUseCustomTagsState> :
+  return TidyUseCustomTagsState(new Int{v})
+
+defmethod print (o:OutputStream, v:TidyUseCustomTagsState) :
+  match(v) :
+    (x:TidyCustomNo) : print(o, "TidyCustomNo")
+    (x:TidyCustomBlocklevel) : print(o, "TidyCustomBlocklevel")
+    (x:TidyCustomEmpty) : print(o, "TidyCustomEmpty")
+    (x:TidyCustomInline) : print(o, "TidyCustomInline")
+    (x:TidyCustomPre) : print(o, "TidyCustomPre")
+

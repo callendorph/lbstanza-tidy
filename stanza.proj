@@ -1,0 +1,28 @@
+packages tidy/* defined-in "src/"
+packages tidy/tests/* defined-in "tests/"
+
+package tidy/Document requires :
+  ccfiles :
+    "{TIDY_LIBDIR}/libtidy.a"
+  ccflags :
+    "-I{TIDY_INCDIR}"
+
+
+build main :
+  inputs:
+    tidy/Document
+    tidy/DocTree
+    tidy/Errors
+    tidy/Language
+    tidy/Options
+    tidy/Version
+    tidy/Buffer
+  pkg: "pkgs"
+
+build-test tidy-tests :
+  inputs:
+    tidy/tests/DocTree
+    tidy/tests/Version
+  pkg: "pkgs"
+  o: "tidy-tests"
+

@@ -1,0 +1,266 @@
+defpackage tidy/DocTree :
+  import core
+  import tidy/Document
+  import tidy/Buffer
+  import tidy/Errors
+  import tidy/Utils
+  import tidy/Enums/TidyNodeType
+  import tidy/Enums/TidyTagId
+  import tidy/Enums/TidyAttrId
+
+extern tidyGetRoot : (ptr<?>) -> ptr<?>
+extern tidyGetHtml : (ptr<?>) -> ptr<?>
+extern tidyGetHead : (ptr<?>) -> ptr<?>
+extern tidyGetBody : (ptr<?>) -> ptr<?>
+extern tidyGetParent : (ptr<?>) -> ptr<?>
+extern tidyGetChild : (ptr<?>) -> ptr<?>
+extern tidyGetNext : (ptr<?>) -> ptr<?>
+extern tidyGetPrev : (ptr<?>) -> ptr<?>
+extern tidyDiscardElement : (ptr<?>,ptr<?>) -> ptr<?>
+extern tidyAttrFirst : (ptr<?>) -> ptr<?>
+extern tidyAttrNext : (ptr<?>) -> ptr<?>
+extern tidyAttrName : (ptr<?>) -> ptr<byte>
+extern tidyAttrValue : (ptr<?>) -> ptr<byte>
+extern tidyAttrDiscard : (ptr<?>,ptr<?>,ptr<?>) -> int  ;  void
+extern tidyAttrGetId : (ptr<?>) -> int
+extern tidyAttrIsEvent : (ptr<?>) -> int
+extern tidyAttrGetById : (ptr<?>,int) -> ptr<?>
+extern tidyNodeGetType : (ptr<?>) -> int
+extern tidyNodeGetName : (ptr<?>) -> ptr<byte>
+extern tidyNodeIsText : (ptr<?>) -> int
+extern tidyNodeIsProp : (ptr<?>,ptr<?>) -> int
+extern tidyNodeIsHeader : (ptr<?>) -> int
+extern tidyNodeHasText : (ptr<?>,ptr<?>) -> int
+extern tidyNodeGetText : (ptr<?>,ptr<?>,ptr<?>) -> int
+extern tidyNodeGetValue : (ptr<?>,ptr<?>,ptr<?>) -> int
+extern tidyNodeGetId : (ptr<?>) -> int
+extern tidyNodeLine : (ptr<?>) -> int
+extern tidyNodeColumn : (ptr<?>) -> int
+
+
+public lostanza deftype TidyNode:
+  value:ptr<?>
+
+public lostanza defn TidyNode (p:ptr<?>) -> ref<TidyNode> :
+  return new TidyNode{p}
+
+public defmethod print (o:OutputStream, n:TidyNode) :
+  print(o, "Node: %_ Line: %_:%_" % [get-name(n), get-line(n), get-column(n)])
+
+public lostanza deftype TidyAttr :
+  value:ptr<?>
+
+public defmethod print (o:OutputStream, n:TidyAttr) :
+  print(o, "Attr: %_=%_" % [get-name(n), get-value(n)])
+
+public lostanza defn TidyAttr (p:ptr<?>) -> ref<TidyAttr> :
+  return new TidyAttr{p}
+
+public lostanza defn get-root (doc:ref<TidyDoc>) -> ref<Maybe<TidyNode>> :
+  val ret = call-c tidyGetRoot(doc.value)
+  if ret == null :
+    return None()
+  return One(TidyNode(ret))
+
+public lostanza defn get-html (doc:ref<TidyDoc>) -> ref<Maybe<TidyNode>> :
+  val ret = call-c tidyGetHtml(doc.value)
+  if ret == null :
+    return None()
+  return One(TidyNode(ret))
+
+public lostanza defn get-head (doc:ref<TidyDoc>) -> ref<Maybe<TidyNode>> :
+  val ret = call-c tidyGetHead(doc.value)
+  if ret == null :
+    return None()
+  return One(TidyNode(ret))
+
+public lostanza defn get-body (doc:ref<TidyDoc>) -> ref<Maybe<TidyNode>> :
+  val ret = call-c tidyGetBody(doc.value)
+  if ret == null :
+    return None()
+  return One(TidyNode(ret))
+
+public lostanza defn get-parent (node:ref<TidyNode>) -> ref<Maybe<TidyNode>> :
+  val ret = call-c tidyGetParent(node.value)
+  if ret == null :
+    return None()
+  return One(TidyNode(ret))
+
+public defn get-parent (node?:Maybe<TidyNode>) -> Maybe<TidyNode> :
+  match(node?):
+    (node:One<TidyNode>): get-parent(value(node))
+    (x:None): x
+
+public lostanza defn get-child (node:ref<TidyNode>) -> ref<Maybe<TidyNode>> :
+  val ret = call-c tidyGetChild(node.value)
+  if ret == null :
+    return None()
+  return One(TidyNode(ret))
+
+public defn get-child (node?:Maybe<TidyNode>) -> Maybe<TidyNode> :
+  match(node?):
+    (node:One<TidyNode>): get-child(value(node))
+    (x:None): x
+
+public defn get-children (node:TidyNode) -> Seq<TidyNode> :
+  var o = get-child(node)
+  generate<TidyNode> :
+    if not empty?(o):
+      yield(value!(o))
+    for i in 0 to false do :
+      match(get-next(o)):
+        (x:None):
+          break()
+        (x:One<TidyNode>):
+          yield(value(x))
+          o = x
+
+public defn get-children (node?:Maybe<TidyNode>) -> Seq<TidyNode> :
+  match(node?):
+    (x:None):
+      generate<TidyNode>:
+        break()
+    (x:One<TidyNode>):
+      get-children(value(x))
+
+public lostanza defn get-next (node:ref<TidyNode>) -> ref<Maybe<TidyNode>> :
+  val ret = call-c tidyGetNext(node.value)
+  if ret == null :
+    return None()
+  return One(TidyNode(ret))
+
+public defn get-next (node?:Maybe<TidyNode>) -> Maybe<TidyNode> :
+  match(node?):
+    (node:One<TidyNode>): get-next(value(node))
+    (x:None): x
+
+public lostanza defn get-prev (node:ref<TidyNode>) -> ref<Maybe<TidyNode>> :
+  val ret = call-c tidyGetPrev(node.value)
+  if ret == null :
+    return None()
+  return One(TidyNode(ret))
+
+public defn get-prev (node?:Maybe<TidyNode>) -> Maybe<TidyNode> :
+  match(node?):
+    (node:One<TidyNode>): get-prev(value(node))
+    (x:None): x
+
+public lostanza defn discard-element (doc:ref<TidyDoc>, node:ref<TidyNode>) -> ref<Maybe<TidyNode>> :
+  val ret = call-c tidyDiscardElement(doc.value, node.value)
+  if ret == null :
+    return None()
+  return One(TidyNode(ret))
+
+public lostanza defn get-type (node:ref<TidyNode>) -> ref<TidyNodeType> :
+  val ret = call-c tidyNodeGetType(node.value)
+  return TidyNodeType(ret)
+
+public lostanza defn get-name (node:ref<TidyNode>) -> ref<String> :
+  val ret = call-c tidyNodeGetName(node.value)
+  if ret == null :
+    throw(TidyFailure("Null String for Name"))
+  return String(ret)
+
+public lostanza defn is-text? (node:ref<TidyNode>) -> ref<True|False> :
+  val ret = call-c tidyNodeIsText(node.value)
+  return to-bool(ret)
+
+public lostanza defn is-prop? (doc:ref<TidyDoc>, node:ref<TidyNode>) -> ref<True|False> :
+  val ret = call-c tidyNodeIsProp(doc.value, node.value)
+  return to-bool(ret)
+
+public lostanza defn is-header? (node:ref<TidyNode>) -> ref<True|False> :
+  val ret = call-c tidyNodeIsHeader(node.value)
+  return to-bool(ret)
+
+public lostanza defn has-text? (doc:ref<TidyDoc>, node:ref<TidyNode>) -> ref<True|False> :
+  val ret = call-c tidyNodeHasText(doc.value, node.value)
+  return to-bool(ret)
+
+public lostanza defn get-text (doc:ref<TidyDoc>, node:ref<TidyNode>) -> ref<String> :
+  ; @todo - maybe a local statically allocated buffer
+  ;   that gets used to create strings
+  val buf = TidyBuffer()
+  val ret = call-c tidyNodeGetText(doc.value, node.value, addr!(buf.allocator))
+  if ret == 0:
+    throw(TidyFailure(String("Failed to Get Node Text")))
+  return get-content(buf)
+
+public lostanza defn get-value (doc:ref<TidyDoc>, node:ref<TidyNode>) -> ref<String> :
+  ; @todo - maybe a local statically allocated buffer
+  ;   that gets used to create strings
+  val buf = TidyBuffer()
+  val ret = call-c tidyNodeGetValue(doc.value, node.value, addr!(buf.allocator))
+  if ret == 0 :
+    throw(TidyFailure(String("Failed to Get Node Value")))
+  return get-content(buf)
+
+public lostanza defn get-id (node:ref<TidyNode>) -> ref<TidyTagId> :
+  val ret = call-c tidyNodeGetId(node.value)
+  return TidyTagId(ret)
+
+public lostanza defn get-line (node:ref<TidyNode>) -> ref<Int> :
+  val ret = call-c tidyNodeLine(node.value)
+  return new Int{ret}
+
+public lostanza defn get-column (node:ref<TidyNode>) -> ref<Int> :
+  val ret = call-c tidyNodeColumn(node.value)
+  return new Int{ret}
+
+public lostanza defn first-attr (node:ref<TidyNode>) -> ref<Maybe<TidyAttr>> :
+  val ret = call-c tidyAttrFirst(node.value)
+  if ret == null:
+    return None()
+  return One(TidyAttr(ret))
+
+public lostanza defn get-next (attr:ref<TidyAttr>) -> ref<Maybe<TidyAttr>> :
+  val ret = call-c tidyAttrNext(attr.value)
+  if ret == null:
+    return None()
+  return One(TidyAttr(ret))
+
+public defn get-next (attr?:Maybe<TidyAttr>) -> Maybe<TidyAttr> :
+  match(attr?):
+    (attr:One<TidyAttr>): get-next(value(attr))
+    (x:None): x
+
+public defn get-attributes (node:TidyNode) -> Seq<TidyAttr> :
+  var o = first-attr(node)
+  generate<TidyAttr> :
+    if not empty?(o):
+      yield(value!(o))
+    for i in 0 to false do :
+      match(get-next(o)):
+        (x:None):
+          break()
+        (x:One<TidyAttr>):
+          yield(value(x))
+          o = x
+
+public lostanza defn get-name (attr:ref<TidyAttr>) -> ref<String> :
+  val ret = call-c tidyAttrName(attr.value)
+  return String(ret)
+
+public lostanza defn get-value (attr:ref<TidyAttr>) -> ref<String> :
+  val ret = call-c tidyAttrValue(attr.value)
+  return String(ret)
+
+public lostanza defn discard-attr (doc:ref<TidyDoc>, node:ref<TidyNode>, attr:ref<TidyAttr>) -> ref<False> :
+  call-c tidyAttrDiscard(doc.value, node.value, attr.value)
+  return false
+
+public lostanza defn get-id (attr:ref<TidyAttr>) -> ref<TidyAttrId> :
+  val ret = call-c tidyAttrGetId(attr.value)
+  return TidyAttrId(ret)
+
+public lostanza defn is-event? (attr:ref<TidyAttr>) -> ref<True|False> :
+  val ret = call-c tidyAttrIsEvent(attr.value)
+  return to-bool(ret)
+
+public lostanza defn get-by-id (node:ref<TidyNode>, attrId:ref<TidyAttrId>) -> ref<Maybe<TidyAttr>> :
+  val ret = call-c tidyAttrGetById(node.value, to-int(attrId).value)
+  if ret == null :
+    return None()
+  return One(TidyAttr(ret))
+
+

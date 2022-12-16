@@ -1,0 +1,30 @@
+defpackage tidy/Enums/TidyLineEnding :
+  import core
+
+public deftype TidyLineEnding
+public deftype TidyLF <: TidyLineEnding
+public deftype TidyCRLF <: TidyLineEnding
+public deftype TidyCR <: TidyLineEnding
+
+public defn to-int (v:TidyLineEnding) -> Int:
+  match(v) :
+    (x:TidyLF) : 0
+    (x:TidyCRLF) : 1
+    (x:TidyCR) : 2
+
+public defn TidyLineEnding (v:Int) -> TidyLineEnding :
+  switch {v == _}:
+    0 : new TidyLF
+    1 : new TidyCRLF
+    2 : new TidyCR
+    else: throw(Exception("Invalid Exception Value"))
+
+public lostanza defn TidyLineEnding (v:int) -> ref<TidyLineEnding> :
+  return TidyLineEnding(new Int{v})
+
+defmethod print (o:OutputStream, v:TidyLineEnding) :
+  match(v) :
+    (x:TidyLF) : print(o, "TidyLF")
+    (x:TidyCRLF) : print(o, "TidyCRLF")
+    (x:TidyCR) : print(o, "TidyCR")
+

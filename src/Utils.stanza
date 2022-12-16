@@ -1,0 +1,8 @@
+defpackage tidy/Utils :
+  import core
+
+public lostanza defn to-bool (v:int) -> ref<True|False> :
+  if v > 0 :
+    return true
+  else:
+    return false

@@ -1,0 +1,14 @@
+#use-added-syntax(tests)
+defpackage tidy/tests/Version :
+  import core
+  import tidy/Version
+
+deftest(version) test-version-basic :
+  val release = tidy-release-date()
+  println("Release Date: %_" % [release])
+
+  val ver = tidy-lib-version()
+  println("Version : %_" % [ver])
+
+  val plt = tidy-platform()
+  println("Platform : %_" % [plt])

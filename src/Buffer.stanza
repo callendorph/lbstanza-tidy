@@ -1,0 +1,32 @@
+defpackage tidy/Buffer :
+  import core
+  import tidy/Errors
+
+
+extern tidyBufInit : (ptr<?>) -> int ; void
+extern tidyBufFree : (ptr<?>) -> int ; void
+
+lostanza deftype TidyBufferFinalizer <: Finalizer :
+  value:ref<TidyBuffer>
+
+lostanza defmethod run (self:ref<TidyBufferFinalizer>) -> ref<False> :
+  call-c tidyBufFree(addr!(self.value.allocator))
+  return false
+
+public lostanza deftype TidyBuffer <: Unique :
+  allocator:ptr<?>
+  bp:ptr<byte>
+  size:int
+  allocated:int
+  next:int
+
+public lostanza defn TidyBuffer () -> ref<TidyBuffer> :
+  val ret = new TidyBuffer{null, null, 0, 0, 0}
+  call-c tidyBufInit(addr!(ret.allocator))
+  add-finalizer(new TidyBufferFinalizer{ret}, ret)
+  return ret
+
+public lostanza defn get-content (b:ref<TidyBuffer>) -> ref<String> :
+  if b.bp == null :
+    throw(TidyFailure("TidyBuffer Not Initialized - Null String"))
+  return String(b.bp)

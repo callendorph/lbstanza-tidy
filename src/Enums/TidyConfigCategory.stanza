@@ -1,0 +1,70 @@
+defpackage tidy/Enums/TidyConfigCategory :
+  import core
+
+public deftype TidyConfigCategory
+public deftype TidyUnknownCategory <: TidyConfigCategory
+public deftype TidyDiagnostics <: TidyConfigCategory
+public deftype TidyDisplay <: TidyConfigCategory
+public deftype TidyDocumentIO <: TidyConfigCategory
+public deftype TidyEncoding <: TidyConfigCategory
+public deftype TidyFileIO <: TidyConfigCategory
+public deftype TidyMarkupCleanup <: TidyConfigCategory
+public deftype TidyMarkupEntities <: TidyConfigCategory
+public deftype TidyMarkupRepair <: TidyConfigCategory
+public deftype TidyMarkupTeach <: TidyConfigCategory
+public deftype TidyMarkupXForm <: TidyConfigCategory
+public deftype TidyPrettyPrint <: TidyConfigCategory
+public deftype TidyInternalCategory <: TidyConfigCategory
+
+public defn to-int (v:TidyConfigCategory) -> Int:
+  match(v) :
+    (x:TidyUnknownCategory) : 300
+    (x:TidyDiagnostics) : 301
+    (x:TidyDisplay) : 302
+    (x:TidyDocumentIO) : 303
+    (x:TidyEncoding) : 304
+    (x:TidyFileIO) : 305
+    (x:TidyMarkupCleanup) : 306
+    (x:TidyMarkupEntities) : 307
+    (x:TidyMarkupRepair) : 308
+    (x:TidyMarkupTeach) : 309
+    (x:TidyMarkupXForm) : 310
+    (x:TidyPrettyPrint) : 311
+    (x:TidyInternalCategory) : 312
+
+public defn TidyConfigCategory (v:Int) -> TidyConfigCategory :
+  switch {v == _}:
+    300 : new TidyUnknownCategory
+    301 : new TidyDiagnostics
+    302 : new TidyDisplay
+    303 : new TidyDocumentIO
+    304 : new TidyEncoding
+    305 : new TidyFileIO
+    306 : new TidyMarkupCleanup
+    307 : new TidyMarkupEntities
+    308 : new TidyMarkupRepair
+    309 : new TidyMarkupTeach
+    310 : new TidyMarkupXForm
+    311 : new TidyPrettyPrint
+    312 : new TidyInternalCategory
+    else: throw(Exception("Invalid Exception Value"))
+
+public lostanza defn TidyConfigCategory (v:int) -> ref<TidyConfigCategory> :
+  return TidyConfigCategory(new Int{v})
+
+defmethod print (o:OutputStream, v:TidyConfigCategory) :
+  match(v) :
+    (x:TidyUnknownCategory) : print(o, "TidyUnknownCategory")
+    (x:TidyDiagnostics) : print(o, "TidyDiagnostics")
+    (x:TidyDisplay) : print(o, "TidyDisplay")
+    (x:TidyDocumentIO) : print(o, "TidyDocumentIO")
+    (x:TidyEncoding) : print(o, "TidyEncoding")
+    (x:TidyFileIO) : print(o, "TidyFileIO")
+    (x:TidyMarkupCleanup) : print(o, "TidyMarkupCleanup")
+    (x:TidyMarkupEntities) : print(o, "TidyMarkupEntities")
+    (x:TidyMarkupRepair) : print(o, "TidyMarkupRepair")
+    (x:TidyMarkupTeach) : print(o, "TidyMarkupTeach")
+    (x:TidyMarkupXForm) : print(o, "TidyMarkupXForm")
+    (x:TidyPrettyPrint) : print(o, "TidyPrettyPrint")
+    (x:TidyInternalCategory) : print(o, "TidyInternalCategory")
+

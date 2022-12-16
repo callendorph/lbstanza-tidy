@@ -1,0 +1,26 @@
+defpackage tidy/Enums/TidyDupAttrModes :
+  import core
+
+public deftype TidyDupAttrModes
+public deftype TidyKeepFirst <: TidyDupAttrModes
+public deftype TidyKeepLast <: TidyDupAttrModes
+
+public defn to-int (v:TidyDupAttrModes) -> Int:
+  match(v) :
+    (x:TidyKeepFirst) : 0
+    (x:TidyKeepLast) : 1
+
+public defn TidyDupAttrModes (v:Int) -> TidyDupAttrModes :
+  switch {v == _}:
+    0 : new TidyKeepFirst
+    1 : new TidyKeepLast
+    else: throw(Exception("Invalid Exception Value"))
+
+public lostanza defn TidyDupAttrModes (v:int) -> ref<TidyDupAttrModes> :
+  return TidyDupAttrModes(new Int{v})
+
+defmethod print (o:OutputStream, v:TidyDupAttrModes) :
+  match(v) :
+    (x:TidyKeepFirst) : print(o, "TidyKeepFirst")
+    (x:TidyKeepLast) : print(o, "TidyKeepLast")
+
