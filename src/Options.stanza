@@ -6,33 +6,7 @@ defpackage tidy/Options :
   import tidy/Enums/TidyOptionId
   import tidy/Enums/TidyOptionType
   import tidy/Enums/TidyConfigCategory
-
-
-extern tidyOptGetId : (ptr<?>) -> int
-extern tidyOptGetIdForName : (ptr<byte>) -> int
-extern tidyGetOptionList : (ptr<?>) -> ptr<?>
-extern tidyGetNextOption : (ptr<?>,ptr<?>) -> ptr<?>
-extern tidyGetOption : (ptr<?>,int) -> ptr<?>
-extern tidyGetOptionByName : (ptr<?>,ptr<byte>) -> ptr<?>
-extern tidyOptGetName : (ptr<?>) -> ptr<byte>
-extern tidyOptGetType : (ptr<?>) -> int
-extern tidyOptionIsList : (ptr<?>) -> int
-extern tidyOptIsReadOnly : (ptr<?>) -> int
-extern tidyOptGetCategory : (ptr<?>) -> int
-extern tidyOptGetDefault : (ptr<?>) -> ptr<byte>
-extern tidyOptGetDefaultInt : (ptr<?>) -> long
-extern tidyOptGetDefaultBool : (ptr<?>) -> int
-extern tidyOptGetPickList : (ptr<?>) -> ptr<?>
-extern tidyOptGetNextPick : (ptr<?>,ptr<?>) -> ptr<byte>
-extern tidyOptGetValue : (ptr<?>,int) -> ptr<byte>
-extern tidyOptSetValue : (ptr<?>,int,ptr<byte>) -> int
-extern tidyOptParseValue : (ptr<?>,ptr<byte>,ptr<byte>) -> int
-extern tidyOptGetInt : (ptr<?>,int) -> long
-extern tidyOptSetInt : (ptr<?>,int,long) -> int
-extern tidyOptGetBool : (ptr<?>,int) -> int
-extern tidyOptSetBool : (ptr<?>,int,int) -> int
-extern tidyOptResetToDefault : (ptr<?>,int) -> int
-extern tidyOptResetAllToDefault : (ptr<?>) -> int
+  import tidy/Wrapper
 
 
 public lostanza deftype TidyOption :
@@ -43,122 +17,122 @@ public lostanza deftype TidyOptIter :
 
 
 public lostanza defn get-id (opt:ref<TidyOption>) -> ref<TidyOptionId> :
-  val ret = call-c tidyOptGetId(opt.value)
+  val ret = w_tidyOptGetId(opt.value)
   return TidyOptionId(ret)
 
 public lostanza defn get-id-for-name (name:ref<String>) -> ref<TidyOptionId> :
-  val ret = call-c tidyOptGetIdForName(addr!(name.chars))
+  val ret = w_tidyOptGetIdForName(addr!(name.chars))
   return TidyOptionId(ret)
 
 public lostanza defn get-options-iter (doc:ref<TidyDoc>) -> ref<TidyOptIter> :
-  val ret = call-c tidyGetOptionList(doc.value)
+  val ret = w_tidyGetOptionList(doc.value)
   if ret == null :
     throw(TidyFailure("Failed to Create Options Iterator - Null Response"))
   return new TidyOptIter{ret}
 
 public lostanza defn get-next-option (doc:ref<TidyDoc>, iter:ref<TidyOptIter>) -> ref<TidyOption> :
-  val ret = call-c tidyGetNextOption(doc.value, addr!(iter.value))
+  val ret = w_tidyGetNextOption(doc.value, addr!(iter.value))
   if ret == null :
     throw(TidyFailure("Failed to Get Next Option - Null Response"))
   return new TidyOption{ret}
 
 public lostanza defn get-option (doc:ref<TidyDoc>, id:ref<Int>) -> ref<TidyOption> :
-  val ret = call-c tidyGetOption(doc.value, id.value)
+  val ret = w_tidyGetOption(doc.value, id.value)
   if ret == null :
     throw(TidyFailure("Failed to Get Option - Null Response"))
   return new TidyOption{ret}
 
 public lostanza defn get-option (doc:ref<TidyDoc>, name:ref<String>) -> ref<TidyOption> :
-  val ret = call-c tidyGetOptionByName(doc.value, addr!(name.chars))
+  val ret = w_tidyGetOptionByName(doc.value, addr!(name.chars))
   if ret == null :
     throw(TidyFailure("Failed to Get Option By Name - Null Response"))
   return new TidyOption{ret}
 
 public lostanza defn get-name (opt:ref<TidyOption>) -> ref<String> :
-  val ret = call-c tidyOptGetName(opt.value)
+  val ret = w_tidyOptGetName(opt.value)
   if ret == null :
     throw(TidyFailure("Failed to Get Option Name - Null Response"))
   return String(ret)
 
 public lostanza defn get-type (opt:ref<TidyOption>) -> ref<TidyOptionType> :
-  val ret = call-c tidyOptGetType(opt.value)
+  val ret = w_tidyOptGetType(opt.value)
   return TidyOptionType(ret)
 
 public lostanza defn is-list? (opt:ref<TidyOption>) -> ref<True|False> :
-  val ret = call-c tidyOptionIsList(opt.value)
+  val ret = w_tidyOptionIsList(opt.value)
   return to-bool(ret)
 
 public lostanza defn is-readonly? (opt:ref<TidyOption>) -> ref<True|False> :
-  val ret = call-c tidyOptIsReadOnly(opt.value)
+  val ret = w_tidyOptIsReadOnly(opt.value)
   return to-bool(ret)
 
 public lostanza defn get-category (opt:ref<TidyOption>) -> ref<TidyConfigCategory> :
-  val ret = call-c tidyOptGetCategory(opt.value)
+  val ret = w_tidyOptGetCategory(opt.value)
   return TidyConfigCategory(ret)
 
 public lostanza defn get-default (opt:ref<TidyOption>) -> ref<String> :
-  val ret = call-c tidyOptGetDefault(opt.value)
+  val ret = w_tidyOptGetDefault(opt.value)
   if ret == null :
     throw(TidyFailure("Failed to Get Option Default - Null Response"))
   return String(ret)
 
 public lostanza defn get-default-long (opt:ref<TidyOption>) -> ref<Long> :
-  val ret = call-c tidyOptGetDefaultInt(opt.value)
+  val ret = w_tidyOptGetDefaultInt(opt.value)
   return new Long{ret}
 
 public lostanza defn get-default-bool (opt:ref<TidyOption>) -> ref<True|False> :
-  val ret = call-c tidyOptGetDefaultBool(opt.value)
+  val ret = w_tidyOptGetDefaultBool(opt.value)
   return to-bool(ret)
 
 public lostanza defn get-pick-list (opt:ref<TidyOption>) -> ref<TidyOptIter> :
-  val ret = call-c tidyOptGetPickList(opt.value)
+  val ret = w_tidyOptGetPickList(opt.value)
   if ret == null :
     throw(TidyFailure("Failed to Get Pick List - Null Response"))
   return new TidyOptIter{ret}
 
 public lostanza defn get-next-pick (opt:ref<TidyOption>, iter:ref<TidyOptIter>) -> ref<String> :
-  val ret = call-c tidyOptGetNextPick(opt.value, addr!(iter.value))
+  val ret = w_tidyOptGetNextPick(opt.value, addr!(iter.value))
   if ret == null :
     throw(TidyFailure("Failed to Get Next Pick - Null Response"))
   return String(ret)
 
 public lostanza defn get-value (doc:ref<TidyDoc>, optId:ref<Int>) -> ref<String> :
-  val ret = call-c tidyOptGetValue(doc.value, optId.value)
+  val ret = w_tidyOptGetValue(doc.value, optId.value)
   if ret == null :
     throw(TidyFailure("Failed to Get Option Value - Null Response"))
   return String(ret)
 
 public lostanza defn set-value (doc:ref<TidyDoc>, optId:ref<Int>, value:ref<String>) -> ref<True|False> :
-  val ret = call-c tidyOptSetValue(doc.value, optId.value, addr!(value.chars))
+  val ret = w_tidyOptSetValue(doc.value, optId.value, addr!(value.chars))
   return to-bool(ret)
 
 public lostanza defn parse-value (doc:ref<TidyDoc>, name:ref<String>, value:ref<String>) -> ref<True|False> :
-  val ret = call-c tidyOptParseValue(doc.value, addr!(name.chars), addr!(value.chars))
+  val ret = w_tidyOptParseValue(doc.value, addr!(name.chars), addr!(value.chars))
   return to-bool(ret)
 
 public lostanza defn get-long (doc:ref<TidyDoc>, optId:ref<Int>) -> ref<Long> :
-  val ret = call-c tidyOptGetInt(doc.value, optId.value)
+  val ret = w_tidyOptGetInt(doc.value, optId.value)
   return new Long{ret}
 
 public lostanza defn set-long (doc:ref<TidyDoc>, optId:ref<Int>, v:ref<Long>) -> ref<True|False> :
-  val ret = call-c tidyOptSetInt(doc.value, optId.value, v.value)
+  val ret = w_tidyOptSetInt(doc.value, optId.value, v.value)
   return to-bool(ret)
 
 public lostanza defn get-bool (doc:ref<TidyDoc>, optId:ref<Int>) -> ref<True|False> :
-  val ret = call-c tidyOptGetBool(doc.value, optId.value)
+  val ret = w_tidyOptGetBool(doc.value, optId.value)
   return to-bool(ret)
 
 public lostanza defn set-bool (doc:ref<TidyDoc>, optId:ref<Int>, v:ref<True|False>) -> ref<True|False> :
   val arg = (v == true) as ref<Int>
-  val ret = call-c tidyOptSetBool(doc.value, optId.value, arg.value)
+  val ret = w_tidyOptSetBool(doc.value, optId.value, arg.value)
   return to-bool(ret)
 
 public lostanza defn reset-to-default (doc:ref<TidyDoc>, optId:ref<Int>) -> ref<True|False> :
-  val ret = call-c tidyOptResetToDefault(doc.value, optId.value)
+  val ret = w_tidyOptResetToDefault(doc.value, optId.value)
   return to-bool(ret)
 
 public lostanza defn reset-all-to-default (doc:ref<TidyDoc>) -> ref<True|False> :
-  val ret = call-c tidyOptResetAllToDefault(doc.value)
+  val ret = w_tidyOptResetAllToDefault(doc.value)
   return to-bool(ret)
 
 

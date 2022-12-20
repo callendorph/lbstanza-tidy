@@ -2,45 +2,13 @@ defpackage tidy/Document :
   import core
   import tidy/Errors
   import tidy/Utils
-
-
-extern tidyCreate : () -> ptr<?>
-extern tidyRelease : (ptr<?>) -> int  ;  void
-extern tidySetAppData : (ptr<?>,ptr<?>) -> int  ;  void
-extern tidyGetAppData : (ptr<?>) -> ptr<?>
-
-extern tidyStatus : (ptr<?>) -> int
-extern tidyDetectedHtmlVersion : (ptr<?>) -> int
-extern tidyDetectedXhtml : (ptr<?>) -> int
-extern tidyDetectedGenericXml : (ptr<?>) -> int
-extern tidyErrorCount : (ptr<?>) -> int
-extern tidyWarningCount : (ptr<?>) -> int
-extern tidyAccessWarningCount : (ptr<?>) -> int
-extern tidyConfigErrorCount : (ptr<?>) -> int
-extern tidyErrorSummary : (ptr<?>) -> int  ;  void
-extern tidyGeneralInfo : (ptr<?>) -> int  ;  void
-
-extern tidyLoadConfig : (ptr<?>,ptr<byte>) -> int
-extern tidyLoadConfigEnc : (ptr<?>,ptr<byte>,ptr<byte>) -> int
-extern tidyFileExists : (ptr<?>,ptr<byte>) -> int
-extern tidySetCharEncoding : (ptr<?>,ptr<byte>) -> int
-extern tidySetInCharEncoding : (ptr<?>,ptr<byte>) -> int
-extern tidySetOutCharEncoding : (ptr<?>,ptr<byte>) -> int
-
-extern tidyParseFile : (ptr<?>,ptr<byte>) -> int
-extern tidyParseString : (ptr<?>,ptr<byte>) -> int
-extern tidyCleanAndRepair : (ptr<?>) -> int
-extern tidyRunDiagnostics : (ptr<?>) -> int
-extern tidyReportDoctype : (ptr<?>) -> int
-extern tidySaveFile : (ptr<?>,ptr<byte>) -> int
-extern tidySaveStdout : (ptr<?>) -> int
-extern tidySaveString : (ptr<?>,ptr<byte>,ptr<?>) -> int
+  import tidy/Wrapper
 
 lostanza deftype TidyDocFinalizer <: Finalizer :
   value:ptr<?>
 
 lostanza defmethod run (self:ref<TidyDocFinalizer>) -> ref<False> :
-  val ret = call-c tidyRelease(self.value)
+  val ret = w_tidyRelease(self.value)
   ; TODO - log return value ?
   return false
 
@@ -48,7 +16,7 @@ public lostanza deftype TidyDoc <: Unique :
   value : ptr<?>
 
 public lostanza defn TidyDoc () -> ref<TidyDoc> :
-  val p:ptr<?> = call-c tidyCreate()
+  val p:ptr<?> = w_tidyCreate()
   if p == null :
     throw(TidyFailure("Failed to Create TidyDoc - Null Response"))
   val ret = new TidyDoc{p}
@@ -56,91 +24,91 @@ public lostanza defn TidyDoc () -> ref<TidyDoc> :
   return ret
 
 public lostanza defn get-status (self:ref<TidyDoc>) -> ref<Int> :
-  val ret = call-c tidyStatus(self.value)
+  val ret = w_tidyStatus(self.value)
   return new Int{ret}
 
 public lostanza defn get-html-version (self:ref<TidyDoc>) -> ref<Int> :
-  val ret = call-c tidyDetectedHtmlVersion(self.value)
+  val ret = w_tidyDetectedHtmlVersion(self.value)
   return new Int{ret}
 
 public lostanza defn is-html-x? (self:ref<TidyDoc>) -> ref<True|False> :
-  val ret = call-c tidyDetectedXhtml(self.value)
+  val ret = w_tidyDetectedXhtml(self.value)
   return to-bool(ret)
 
 public lostanza defn is-xml? (self:ref<TidyDoc>) -> ref<True|False> :
-  val ret = call-c tidyDetectedGenericXml(self.value)
+  val ret = w_tidyDetectedGenericXml(self.value)
   return to-bool(ret)
 
 public lostanza defn get-error-count (self:ref<TidyDoc>) -> ref<Int> :
-  val ret = call-c tidyErrorCount(self.value)
+  val ret = w_tidyErrorCount(self.value)
   return new Int{ret}
 
 public lostanza defn get-warning-count (self:ref<TidyDoc>) -> ref<Int> :
-  val ret = call-c tidyWarningCount(self.value)
+  val ret = w_tidyWarningCount(self.value)
   return new Int{ret}
 
 public lostanza defn get-access-warning-count (self:ref<TidyDoc>) -> ref<Int> :
-  val ret = call-c tidyAccessWarningCount(self.value)
+  val ret = w_tidyAccessWarningCount(self.value)
   return new Int{ret}
 
 public lostanza defn get-config-error-count (self:ref<TidyDoc>) -> ref<Int> :
-  val ret = call-c tidyConfigErrorCount(self.value)
+  val ret = w_tidyConfigErrorCount(self.value)
   return new Int{ret}
 
 public lostanza defn gen-error-summary (self:ref<TidyDoc>) -> ref<False> :
-  call-c tidyErrorSummary(self.value)
+  w_tidyErrorSummary(self.value)
   return false
 
 public lostanza defn gen-general-info (self:ref<TidyDoc>) -> ref<False> :
-  call-c tidyGeneralInfo(self.value)
+  w_tidyGeneralInfo(self.value)
   return false
 
 public lostanza defn load-config (self:ref<TidyDoc>, configFile:ref<String>) -> ref<Int> :
-  val ret = call-c tidyLoadConfig(self.value, addr!(configFile.chars))
+  val ret = w_tidyLoadConfig(self.value, addr!(configFile.chars))
   return new Int{ret}
 
 public lostanza defn load-config-enc (self:ref<TidyDoc>, configFile:ref<String>, encoding:ref<String>) -> ref<Int> :
-  val ret = call-c tidyLoadConfigEnc(self.value, addr!(configFile.chars), addr!(encoding.chars))
+  val ret = w_tidyLoadConfigEnc(self.value, addr!(configFile.chars), addr!(encoding.chars))
   return new Int{ret}
 
 public lostanza defn set-char-encoding (self:ref<TidyDoc>, encoding:ref<String>) -> ref<Int> :
-  val ret = call-c tidySetCharEncoding(self.value, addr!(encoding.chars))
+  val ret = w_tidySetCharEncoding(self.value, addr!(encoding.chars))
   return new Int{ret}
 
 public lostanza defn set-in-char-encoding (self:ref<TidyDoc>, encoding:ref<String>) -> ref<Int> :
-  val ret = call-c tidySetInCharEncoding(self.value, addr!(encoding.chars))
+  val ret = w_tidySetInCharEncoding(self.value, addr!(encoding.chars))
   return new Int{ret}
 
 public lostanza defn set-out-char-encoding (self:ref<TidyDoc>, encoding:ref<String>) -> ref<Int> :
-  val ret = call-c tidySetOutCharEncoding(self.value, addr!(encoding.chars))
+  val ret = w_tidySetOutCharEncoding(self.value, addr!(encoding.chars))
   return new Int{ret}
 
 
 public lostanza defn parse-file (self:ref<TidyDoc>, fpath:ref<String>) -> ref<Int> :
-  val ret = call-c tidyParseFile(self.value, addr!(fpath.chars))
+  val ret = w_tidyParseFile(self.value, addr!(fpath.chars))
   return new Int{ret}
 
 public lostanza defn parse-str (self:ref<TidyDoc>, content:ref<String>) -> ref<Int> :
-  val ret = call-c tidyParseString(self.value, addr!(content.chars))
+  val ret = w_tidyParseString(self.value, addr!(content.chars))
   return new Int{ret}
 
 public lostanza defn clean-and-repair (self:ref<TidyDoc>) -> ref<Int> :
-  val ret = call-c tidyCleanAndRepair(self.value)
+  val ret = w_tidyCleanAndRepair(self.value)
   return new Int{ret}
 
 public lostanza defn run-diagnostics (self:ref<TidyDoc>) -> ref<Int> :
-  val ret = call-c tidyRunDiagnostics(self.value)
+  val ret = w_tidyRunDiagnostics(self.value)
   return new Int{ret}
 
 public lostanza defn report-doc-type (self:ref<TidyDoc>) -> ref<Int> :
-  val ret = call-c tidyReportDoctype(self.value)
+  val ret = w_tidyReportDoctype(self.value)
   return new Int{ret}
 
 public lostanza defn save-file (self:ref<TidyDoc>, fpath:ref<String>) -> ref<Int> :
-  val ret = call-c tidySaveFile(self.value, addr!(fpath.chars))
+  val ret = w_tidySaveFile(self.value, addr!(fpath.chars))
   return new Int{ret}
 
 public lostanza defn save-stdout (self:ref<TidyDoc>) -> ref<Int> :
-  val ret = call-c tidySaveStdout(self.value)
+  val ret = w_tidySaveStdout(self.value)
   return new Int{ret}
 

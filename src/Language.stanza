@@ -1,15 +1,12 @@
 defpackage tidy/Language :
   import core
   import tidy/Utils
-
-extern tidySetLanguage : (ptr<byte>) -> int
-extern tidyGetLanguage : () -> ptr<byte>
-
+  import tidy/Wrapper
 
 public lostanza defn set-language (langCode:ref<String>) -> ref<True|False> :
-  val ret = call-c tidySetLanguage(addr!(langCode.chars))
+  val ret = w_tidySetLanguage(addr!(langCode.chars))
   return to-bool(ret)
 
 public lostanza defn get-language () -> ref<String> :
-  val ret = call-c tidyGetLanguage()
+  val ret = w_tidyGetLanguage()
   return String(ret)

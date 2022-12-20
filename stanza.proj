@@ -17,12 +17,16 @@ build main :
     tidy/Options
     tidy/Version
     tidy/Buffer
+    tidy/Wrapper
+  flags: COMPILE-STATIC
   pkg: "pkgs"
 
 build-test tidy-tests :
   inputs:
     tidy/tests/DocTree
     tidy/tests/Version
-  pkg: "pkgs"
+    tidy/tests/Language
+  pkg: "test-pkgs"
+  flags: COMPILE-STATIC
   o: "tidy-tests"
 
