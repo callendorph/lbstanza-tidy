@@ -1,16 +1,13 @@
 defpackage tidy/Buffer :
   import core
   import tidy/Errors
-
-
-extern tidyBufInit : (ptr<?>) -> int ; void
-extern tidyBufFree : (ptr<?>) -> int ; void
+  import tidy/Wrapper
 
 lostanza deftype TidyBufferFinalizer <: Finalizer :
   value:ref<TidyBuffer>
 
 lostanza defmethod run (self:ref<TidyBufferFinalizer>) -> ref<False> :
-  call-c tidyBufFree(addr!(self.value.allocator))
+  w_tidyBufFree(addr!(self.value.allocator))
   return false
 
 public lostanza deftype TidyBuffer <: Unique :
@@ -22,7 +19,7 @@ public lostanza deftype TidyBuffer <: Unique :
 
 public lostanza defn TidyBuffer () -> ref<TidyBuffer> :
   val ret = new TidyBuffer{null, null, 0, 0, 0}
-  call-c tidyBufInit(addr!(ret.allocator))
+  w_tidyBufInit(addr!(ret.allocator))
   add-finalizer(new TidyBufferFinalizer{ret}, ret)
   return ret
 
