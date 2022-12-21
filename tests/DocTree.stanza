@@ -155,7 +155,7 @@ deftest(doctree) test-node-text:
   #EXPECT(has-text?(doc, text) == true)
 
   val content = get-text(doc, text)
-  #EXPECT(content == "SomeText\n")
+  #EXPECT(trim(content) == "SomeText")
 
   val raw = get-value(doc, text)
   #EXPECT(raw == "SomeText")
