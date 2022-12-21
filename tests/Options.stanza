@@ -1,0 +1,161 @@
+#use-added-syntax(tests)
+defpackage tidy/tests/Options :
+  import core
+  import tidy/Document
+  import tidy/Options
+  import tidy/Enums/TidyOptionId
+  import tidy/Enums/TidyOptionType
+  import tidy/Enums/TidyConfigCategory
+
+#if-defined(TESTING) :
+  public defn expect-throw (f) -> [True|False, String] :
+    try :
+      val unexpected = f()
+      [false, "No Exception Thrown"]
+    catch (e:Exception) :
+      val msg = to-string("%~" % [e])
+      [true, msg]
+
+deftest(options) test-opts-basic:
+
+  val doc = TidyDoc()
+  val opt = get-option(doc, TidyShowWarnings)
+
+  val optId = get-id(opt)
+  #EXPECT(optId == TidyShowWarnings)
+
+  val name = get-name(opt)
+  #EXPECT(name == "show-warnings")
+
+  val optIdByStr = get-id-for-name("show-warnings")
+  #EXPECT(optIdByStr == optId)
+
+  val optByStr = get-option(doc, "show-warnings")
+  #EXPECT(get-id(optByStr) == optId)
+
+  val optType = get-type(opt)
+  #EXPECT(optType is TidyBoolean)
+
+  #EXPECT(is-list?(opt) == false)
+  #EXPECT(is-readonly?(opt) == false)
+
+  val category = get-category(opt)
+  #EXPECT(category is TidyDisplay)
+
+  val def = get-default-bool(opt)
+  #EXPECT(def == true)
+
+  var curr = get-bool(doc, optId)
+  #EXPECT(curr == true)
+  set-bool(doc, optId, false)
+  curr = get-bool(doc, optId)
+  #EXPECT(curr == false)
+
+  reset-to-default(doc, TidyShowWarnings)
+
+  curr = get-bool(doc, optId)
+  #EXPECT(curr == true)
+
+  set-bool(doc, optId, false)
+  curr = get-bool(doc, optId)
+  #EXPECT(curr == false)
+
+  reset-all-to-default(doc)
+
+  curr = get-bool(doc, optId)
+  #EXPECT(curr == true)
+
+  ; Test a string option
+  var content = get-value(doc, TidyCSSPrefix)
+  #EXPECT(content == "c")
+
+  set-value(doc, TidyCSSPrefix, "z")
+  content = get-value(doc, TidyCSSPrefix)
+  #EXPECT(content == "z")
+
+  reset-to-default(doc, TidyCSSPrefix)
+  content = get-value(doc, TidyCSSPrefix)
+  #EXPECT(content == "c")
+
+  val sopt = get-option(doc, TidyCSSPrefix)
+  val sdef = get-default(sopt)
+  #EXPECT(sdef == "c")
+
+  ; Test a int/long option
+
+  var ival = get-long(doc, TidyIndentSpaces)
+  #EXPECT(ival == 2L)
+
+  set-long(doc, TidyIndentSpaces, 4L)
+  ival = get-long(doc, TidyIndentSpaces)
+  #EXPECT(ival == 4L)
+
+
+  reset-to-default(doc, TidyIndentSpaces)
+  ival = get-long(doc, TidyIndentSpaces)
+  #EXPECT(ival == 2L)
+
+  val iopt = get-option(doc, TidyIndentSpaces)
+  val idef = get-default-long(iopt)
+  #EXPECT(idef == 2L)
+
+deftest(options) test-opt-type-checking:
+
+  val doc = TidyDoc()
+
+  val strVecs = [
+    TidyShowWarnings,
+    TidyIndentSpaces,
+  ]
+
+  for optId in strVecs do:
+    val [throws, msg] = expect-throw({get-value(doc, optId)})
+    #EXPECT(throws)
+    #EXPECT(index-of-chars(msg, "Invalid Option Type: Expected: TidyString") != false)
+
+    val [throws2, msg2] = expect-throw({set-value(doc, optId, "asdf")})
+    #EXPECT(throws2)
+    #EXPECT(index-of-chars(msg2, "Invalid Option Type: Expected: TidyString") != false)
+
+    val opt = get-option(doc, optId)
+    val [throws3, msg3] = expect-throw({get-default(opt)})
+    #EXPECT(throws3)
+    #EXPECT(index-of-chars(msg3, "Invalid Option Type: Expected: TidyString") != false)
+
+  val intVecs = [
+    TidyShowWarnings,
+    TidyCSSPrefix,
+  ]
+
+  for optId in intVecs do:
+    val [throws, msg] = expect-throw({get-long(doc, optId)})
+    #EXPECT(throws)
+    #EXPECT(index-of-chars(msg, "Invalid Option Type: Expected: TidyInteger") != false)
+
+    val [throws2, msg2] = expect-throw({set-long(doc, optId, 1L)})
+    #EXPECT(throws2)
+    #EXPECT(index-of-chars(msg2, "Invalid Option Type: Expected: TidyInteger") != false)
+
+    val opt = get-option(doc, optId)
+    val [throws3, msg3] = expect-throw({get-default-long(opt)})
+    #EXPECT(throws3)
+    #EXPECT(index-of-chars(msg3, "Invalid Option Type: Expected: TidyInteger") != false)
+
+  val boolVecs = [
+    TidyIndentSpaces,
+    TidyCSSPrefix,
+  ]
+
+  for optId in boolVecs do:
+    val [throws, msg] = expect-throw({get-bool(doc, optId)})
+    #EXPECT(throws)
+    #EXPECT(index-of-chars(msg, "Invalid Option Type: Expected: TidyBoolean") != false)
+
+    val [throws2, msg2] = expect-throw({set-bool(doc, optId, false)})
+    #EXPECT(throws2)
+    #EXPECT(index-of-chars(msg, "Invalid Option Type: Expected: TidyBoolean") != false)
+
+    val opt = get-option(doc, optId)
+    val [throws3, msg3] = expect-throw({get-default-bool(opt)})
+    #EXPECT(throws3)
+    #EXPECT(index-of-chars(msg3, "Invalid Option Type: Expected: TidyBoolean") != false)

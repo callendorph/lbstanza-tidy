@@ -36,8 +36,8 @@ public lostanza defn get-next-option (doc:ref<TidyDoc>, iter:ref<TidyOptIter>) -
     throw(TidyFailure("Failed to Get Next Option - Null Response"))
   return new TidyOption{ret}
 
-public lostanza defn get-option (doc:ref<TidyDoc>, id:ref<Int>) -> ref<TidyOption> :
-  val ret = w_tidyGetOption(doc.value, id.value)
+public lostanza defn get-option (doc:ref<TidyDoc>, id:ref<TidyOptionId>) -> ref<TidyOption> :
+  val ret = w_tidyGetOption(doc.value, to-int(id).value)
   if ret == null :
     throw(TidyFailure("Failed to Get Option - Null Response"))
   return new TidyOption{ret}
@@ -71,16 +71,19 @@ public lostanza defn get-category (opt:ref<TidyOption>) -> ref<TidyConfigCategor
   return TidyConfigCategory(ret)
 
 public lostanza defn get-default (opt:ref<TidyOption>) -> ref<String> :
+  check-type(opt, TidyString)
   val ret = w_tidyOptGetDefault(opt.value)
   if ret == null :
     throw(TidyFailure("Failed to Get Option Default - Null Response"))
   return String(ret)
 
 public lostanza defn get-default-long (opt:ref<TidyOption>) -> ref<Long> :
+  check-type(opt, TidyInteger)
   val ret = w_tidyOptGetDefaultInt(opt.value)
   return new Long{ret}
 
 public lostanza defn get-default-bool (opt:ref<TidyOption>) -> ref<True|False> :
+  check-type(opt, TidyBoolean)
   val ret = w_tidyOptGetDefaultBool(opt.value)
   return to-bool(ret)
 
@@ -96,39 +99,58 @@ public lostanza defn get-next-pick (opt:ref<TidyOption>, iter:ref<TidyOptIter>) 
     throw(TidyFailure("Failed to Get Next Pick - Null Response"))
   return String(ret)
 
-public lostanza defn get-value (doc:ref<TidyDoc>, optId:ref<Int>) -> ref<String> :
-  val ret = w_tidyOptGetValue(doc.value, optId.value)
+defn check-type (opt:TidyOption, expect:TidyOptionType) :
+  val t = get-type(opt)
+  if t != expect:
+    val msg = to-string("Invalid Option Type: Expected: %_ Received: %_" % [expect, t])
+    throw(TidyFailure(msg))
+
+defn check-type (doc:TidyDoc, optId:TidyOptionId, expect:TidyOptionType) :
+  ; Confirm that the option type matches the expected type for a method.
+  ;   Some of these functions will seg-fault if you pass the wrong
+  ;   argument type to them
+  val opt = get-option(doc, optId)
+  check-type(opt, expect)
+
+public lostanza defn get-value (doc:ref<TidyDoc>, optId:ref<TidyOptionId>) -> ref<String> :
+  check-type(doc, optId, TidyString)
+  val ret = w_tidyOptGetValue(doc.value, to-int(optId).value)
   if ret == null :
     throw(TidyFailure("Failed to Get Option Value - Null Response"))
   return String(ret)
 
-public lostanza defn set-value (doc:ref<TidyDoc>, optId:ref<Int>, value:ref<String>) -> ref<True|False> :
-  val ret = w_tidyOptSetValue(doc.value, optId.value, addr!(value.chars))
+public lostanza defn set-value (doc:ref<TidyDoc>, optId:ref<TidyOptionId>, value:ref<String>) -> ref<True|False> :
+  check-type(doc, optId, TidyString)
+  val ret = w_tidyOptSetValue(doc.value, to-int(optId).value, addr!(value.chars))
   return to-bool(ret)
 
 public lostanza defn parse-value (doc:ref<TidyDoc>, name:ref<String>, value:ref<String>) -> ref<True|False> :
   val ret = w_tidyOptParseValue(doc.value, addr!(name.chars), addr!(value.chars))
   return to-bool(ret)
 
-public lostanza defn get-long (doc:ref<TidyDoc>, optId:ref<Int>) -> ref<Long> :
-  val ret = w_tidyOptGetInt(doc.value, optId.value)
+public lostanza defn get-long (doc:ref<TidyDoc>, optId:ref<TidyOptionId>) -> ref<Long> :
+  check-type(doc, optId, TidyInteger)
+  val ret = w_tidyOptGetInt(doc.value, to-int(optId).value)
   return new Long{ret}
 
-public lostanza defn set-long (doc:ref<TidyDoc>, optId:ref<Int>, v:ref<Long>) -> ref<True|False> :
-  val ret = w_tidyOptSetInt(doc.value, optId.value, v.value)
+public lostanza defn set-long (doc:ref<TidyDoc>, optId:ref<TidyOptionId>, v:ref<Long>) -> ref<True|False> :
+  check-type(doc, optId, TidyInteger)
+  val ret = w_tidyOptSetInt(doc.value, to-int(optId).value, v.value)
   return to-bool(ret)
 
-public lostanza defn get-bool (doc:ref<TidyDoc>, optId:ref<Int>) -> ref<True|False> :
-  val ret = w_tidyOptGetBool(doc.value, optId.value)
+public lostanza defn get-bool (doc:ref<TidyDoc>, optId:ref<TidyOptionId>) -> ref<True|False> :
+  check-type(doc, optId, TidyBoolean)
+  val ret = w_tidyOptGetBool(doc.value, to-int(optId).value)
   return to-bool(ret)
 
-public lostanza defn set-bool (doc:ref<TidyDoc>, optId:ref<Int>, v:ref<True|False>) -> ref<True|False> :
+public lostanza defn set-bool (doc:ref<TidyDoc>, optId:ref<TidyOptionId>, v:ref<True|False>) -> ref<True|False> :
+  check-type(doc, optId, TidyBoolean)
   val arg = (v == true) as ref<Int>
-  val ret = w_tidyOptSetBool(doc.value, optId.value, arg.value)
+  val ret = w_tidyOptSetBool(doc.value, to-int(optId).value, arg.value)
   return to-bool(ret)
 
-public lostanza defn reset-to-default (doc:ref<TidyDoc>, optId:ref<Int>) -> ref<True|False> :
-  val ret = w_tidyOptResetToDefault(doc.value, optId.value)
+public lostanza defn reset-to-default (doc:ref<TidyDoc>, optId:ref<TidyOptionId>) -> ref<True|False> :
+  val ret = w_tidyOptResetToDefault(doc.value, to-int(optId).value)
   return to-bool(ret)
 
 public lostanza defn reset-all-to-default (doc:ref<TidyDoc>) -> ref<True|False> :
