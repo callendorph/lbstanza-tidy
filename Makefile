@@ -1,9 +1,9 @@
 all: build
 
-tests: build tidy-tests
+tests: tidy-tests
 	./tidy-tests
 
-test-%: build tidy-tests
+test-%: tidy-tests
 	./tidy-tests -tagged $(@:test-%=%)
 
 build:
@@ -22,6 +22,7 @@ tidy-enums: tidy-headers
 	python convert.py --input ./tidyfull.h func-decl --pkg-prefix tidy --output src/Wrapper.stanza --func-form both
 
 clean:
-	rm ./pkgs/*.pkg
+	rm -f ./pkgs/*.pkg
+	rm -f ./test-pkgs/*.pkg
 
 .phony: clean
