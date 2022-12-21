@@ -10,6 +10,8 @@ defpackage tidy/tests/DocTree :
   import tidy/Enums/TidyNodeType
   import tidy/Enums/TidyTagId
   import tidy/Enums/TidyAttrId
+  import tidy/Enums/TidyOptionId
+
 
 
 deftest(doctree) test-basic:
@@ -225,3 +227,54 @@ deftest(doctree) test-node-attr-str:
   val attr:TidyAttr = value!(first-attr(p1))
   val aStr = to-string("%~" % [attr])
   #EXPECT(aStr == "Attr: id=asdf")
+
+deftest(doctree) test-filter-seq:
+  val doc = TidyDoc()
+  val stat = get-status(doc)
+  #EXPECT(stat == 0)
+
+  ; This quells warnings generated because the parsed HTML doesn't include
+  ;  all the necessary tags and doctypes.
+  set-bool(doc, TidyShowWarnings, false)
+
+  val msg = [
+    "<body>",
+    "<p id=\"asdf\" class=\"shark\">SomeText</p>",
+    "<p id=\"qwer\" class=\"dolphin\">OtherText</p>",
+    "<div> Non-Sense </div>",
+    "<p id=\"zxcv\" class=\"shark\">Why Sharks?</p>",
+    "<p id=\"fdsa\" class=\"shark\">Why Not Sharks?</p>",
+    "<p id=\"rewq\" class=\"dolphin\">Why Not Dolphins?</p>",
+    "<div> More Non-Sense </div>",
+    "<h1 class=\"mouse badger bear\"> Oh My <h1>",
+    "</body>",
+  ]
+  val input = string-join(msg)
+
+  val code = parse-str(doc, input)
+  #EXPECT(code == 1) ; Warning but not important.
+
+  val kids = to-tuple(get-children(get-body(doc)))
+  val pTags = to-tuple(filter({is-tag-id?(_, TidyTag_P)}, kids))
+  #EXPECT(length(pTags) == 5)
+
+  val divTags = to-tuple(filter({is-tag-id?(_, TidyTag_DIV)}, kids))
+  #EXPECT(length(divTags) == 2)
+
+  val sharks = to-tuple(filter(is-html-class?{_, "shark"}, kids))
+  #EXPECT(length(sharks) == 3)
+
+  val dolphins = to-tuple(filter(is-html-class?{_, "dolphin"}, kids))
+  #EXPECT(length(dolphins) == 2)
+
+  val asdf = to-tuple(filter(is-html-id?{_, "asdf"}, kids))
+  #EXPECT(length(asdf) == 1)
+
+  val badger = to-tuple(filter(has-html-class?{_, "badger"}, kids))
+  #EXPECT(length(badger) == 1)
+
+  val wq = to-tuple(filter(suffix-attr?{_, TidyAttr_ID, "wq"}, kids))
+  #EXPECT(length(wq) == 1)
+
+  val zx = to-tuple(filter(prefix-attr?{_, TidyAttr_ID, "zx"}, kids))
+  #EXPECT(length(zx) == 1)
