@@ -95,6 +95,11 @@ public defn get-children (node?:Maybe<TidyNode>) -> Seq<TidyNode> :
     (x:One<TidyNode>):
       get-children(value(x))
 
+public defn is-tag-id? (node:TidyNode, tagId:TidyTagId) -> True|False :
+  ; This function is used for filtering the children of a
+  ;   node by a particular type.
+  get-id(node) == tagId
+
 public lostanza defn get-next (node:ref<TidyNode>) -> ref<Maybe<TidyNode>> :
   val ret = w_tidyGetNext(node.value)
   if ret == null :
@@ -235,4 +240,60 @@ public lostanza defn get-by-id (node:ref<TidyNode>, attrId:ref<TidyAttrId>) -> r
     return None()
   return One(TidyAttr(ret))
 
+public defn if-attr? (node:TidyNode, id:TidyAttrId, f:(TidyAttr -> True|False)) -> True|False :
+  ; Call f if there is a valid attribute of the passed type.
+  val attr? = get-by-id(node, id)
+  match(attr?) :
+    (x:None): false
+    (x:One<TidyAttr>): f(value(x))
 
+public defn with-attr? (node:TidyNode, id:TidyAttrId) -> True|False :
+  ; Returns true if this node has an attribute of the given id.
+  defn is-true (n:TidyAttr) -> True|False:
+    true
+  if-attr?(node, id, is-true)
+
+public defn is-attr? (node:TidyNode, id:TidyAttrId, cls:String ) -> True|False :
+  ; This function filters for nodes who have an attribute equal to cls
+  defn is-equal? (n:TidyAttr) -> True|False:
+    get-value(n) == cls
+  if-attr?(node, id, is-equal?)
+
+public defn is-html-id? (node:TidyNode, idName:String) -> True|False :
+  is-attr?(node, TidyAttr_ID, idName)
+
+public defn is-html-class? (node:TidyNode, cls:String) -> True|False :
+  is-attr?(node, TidyAttr_CLASS, cls)
+
+public defn has-attr? (node:TidyNode, id:TidyAttrId, query:String ) -> True|False :
+  ; For an html node attribute with multiple space-separated values:
+  ;  <p attr="asdf qwer"> ...
+  ;  This will return true if `cls` matches any of the space-separated classes
+  ;  in the `class` attribute.
+  defn has-class? (n:TidyAttr) -> True|False:
+    contains?(split(get-value(n), " "), query)
+  if-attr?(node, id, has-class?)
+
+public defn has-html-class? (node:TidyNode, cls:String) -> True|False :
+  has-attr?(node, TidyAttr_CLASS, cls)
+
+public defn contains-attr? (node:TidyNode, id:TidyAttrId, query:String) -> True|False :
+  defn contains? (n:TidyAttr) -> True|False:
+    index-of-chars(get-value(n), query) != false
+  if-attr?(node, id, contains?)
+
+public defn contains-html-id? (node:TidyNode, query:String) -> True|False :
+  contains-attr?(node, TidyAttr_ID, query)
+
+public defn contains-html-class? (node:TidyNode, query:String) -> True|False :
+  contains-attr?(node, TidyAttr_CLASS, query)
+
+public defn suffix-attr? (node:TidyNode, id:TidyAttrId, query:String) -> True|False :
+  defn at-suffix? (n:TidyAttr) -> True|False :
+    suffix?(get-value(n), query)
+  if-attr?(node, id, at-suffix?)
+
+public defn prefix-attr? (node:TidyNode, id:TidyAttrId, query:String) -> True|False :
+  defn at-prefix? (n:TidyAttr) -> True|False :
+    prefix?(get-value(n), query)
+  if-attr?(node, id, at-prefix?)
