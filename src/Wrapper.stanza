@@ -767,8 +767,8 @@ defpackage tidy/Wrapper :
     call-c tidyInitOutputBuffer(outp, buf)
     return false
 #else:
-  val DEF_LIB_PATH="./libtidy.dll"
-  val ENV_LIB_PATH_NAME="TIDY_SHARED_LIB"
+  val DEF_LIB_PATH = "./libtidy.dll"
+  val ENV_LIB_PATH_NAME = "TIDY_SHARED_LIB"
   defn get-shared-lib () -> String :
     label<String> return:
       var sharedLib = get-env(ENV_LIB_PATH_NAME)
