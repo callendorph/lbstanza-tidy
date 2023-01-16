@@ -27,6 +27,7 @@ build-test tidy-tests :
     tidy/tests/Version
     tidy/tests/Language
     tidy/tests/Options
+    tidy/tests/Enums
   pkg: "test-pkgs"
   flags: COMPILE-STATIC
   o: "tidy-tests"
