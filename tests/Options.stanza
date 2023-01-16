@@ -34,13 +34,13 @@ deftest(options) test-opts-basic:
   #EXPECT(get-id(optByStr) == optId)
 
   val optType = get-type(opt)
-  #EXPECT(optType is TidyBoolean)
+  #EXPECT(optType == TidyBoolean)
 
   #EXPECT(is-list?(opt) == false)
   #EXPECT(is-readonly?(opt) == false)
 
   val category = get-category(opt)
-  #EXPECT(category is TidyDisplay)
+  #EXPECT(category == TidyDisplay)
 
   val def = get-default-bool(opt)
   #EXPECT(def == true)

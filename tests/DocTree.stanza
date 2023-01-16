@@ -33,7 +33,7 @@ deftest(doctree) test-basic:
   match(get-root(doc)):
     (x:One<TidyNode>):
       val root = value(x)
-      #EXPECT( get-type(root) is TidyNode_Root)
+      #EXPECT( get-type(root) == TidyNode_Root)
     (x:None):
       #EXPECT( "Expected Root Non Null" == "")
 
@@ -41,7 +41,7 @@ deftest(doctree) test-basic:
     (x:One<TidyNode>):
       val html = value(x)
       #EXPECT(get-name(html) == "html")
-      #EXPECT(get-type(html) is TidyNode_Start)
+      #EXPECT(get-type(html) == TidyNode_Start)
     (x:None):
       #EXPECT( "Expected HTML Non Null" == "")
 
@@ -49,7 +49,7 @@ deftest(doctree) test-basic:
     (x:One<TidyNode>):
       val head = value(x)
       #EXPECT(get-name(head) == "head")
-      #EXPECT(get-type(head) is TidyNode_Start)
+      #EXPECT(get-type(head) == TidyNode_Start)
       #EXPECT(is-header?(head) == false)
       #EXPECT(has-text?(doc, head) == false)
     (x:None):
@@ -59,7 +59,7 @@ deftest(doctree) test-basic:
     (x:One<TidyNode>):
       val body = value(x)
       #EXPECT(get-name(body) == "body")
-      #EXPECT(get-type(body) is TidyNode_Start)
+      #EXPECT(get-type(body) == TidyNode_Start)
       #EXPECT(is-header?(body) == false)
     (x:None):
       println("No Body Node Returned")
@@ -82,11 +82,11 @@ deftest(doctree) test-child-parent:
     (x:One<TidyNode>):
       val p1 = value(x)
       #EXPECT(get-name(p1) == "p")
-      #EXPECT(get-type(p1) is TidyNode_Start)
+      #EXPECT(get-type(p1) == TidyNode_Start)
       #EXPECT(is-header?(p1) == false)
       #EXPECT(get-line(p1) == 1)
       #EXPECT(get-column(p1) == 65)
-      #EXPECT(get-id(p1) is TidyTag_P)
+      #EXPECT(get-id(p1) == TidyTag_P)
 
       val p2 = get-next(p1)
       #EXPECT(not empty?(p2))
@@ -133,7 +133,7 @@ deftest(doctree) test-node-attr:
       val idAttr = value(x)
       #EXPECT(get-name(idAttr) == "id")
       #EXPECT(get-value(idAttr) == "asdf")
-      #EXPECT(get-id(idAttr) is TidyAttr_ID)
+      #EXPECT(get-id(idAttr) == TidyAttr_ID)
 
   val a = first-attr(p1)
   #EXPECT(not empty?(a))
