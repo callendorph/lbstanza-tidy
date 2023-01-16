@@ -1,0 +1,21 @@
+#use-added-syntax(tests)
+defpackage tidy/tests/Enums :
+  import core
+  import tidy/Enums/TidyConfigCategory
+  import tidy/Enums/TidyAttrId
+
+deftest(enums) test-basic-enums:
+
+  var obs = to-int(TidyDiagnostics)
+  #EXPECT(obs == 301)
+
+  val enumObs = TidyConfigCategory(302)
+  #EXPECT(enumObs == TidyDisplay)
+  #EXPECT(enumObs != TidyDiagnostics)
+
+  obs = to-int(TidyAttr_SRC)
+  #EXPECT(obs == 141)
+
+  val attr = TidyAttrId(143)
+  #EXPECT(attr == TidyAttr_STANDBY)
+  #EXPECT(attr != TidyAttr_SRC)
